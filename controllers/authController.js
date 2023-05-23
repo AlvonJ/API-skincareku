@@ -23,7 +23,7 @@ exports.register = catchAsync(async (req, res, next) => {
     email: newUser.email,
     uid: uid
   }
-  const response = await db.collection('users').doc(uid).set(userJson)
+  await db.collection('users').doc(uid).set(userJson)
 
   //success
   res.status(201).json({
@@ -42,6 +42,10 @@ exports.deleteByEmail = catchAsync(async (req, res, next) => {
 
   await admin.auth().deleteUser(user.uid)
 
+  //firestore
+  const db = admin.firestore()
+  await db.collection('users').doc(user.uid).delete()
+
   res.status(204).json({
     status: 'success',
     data: null
@@ -53,6 +57,10 @@ exports.deleteByUid = catchAsync(async (req, res, next) => {
   if (!req.body.uid) return next(new AppError('Please provide uid!', 400))
 
   await admin.auth().deleteUser(req.body.uid)
+
+  //firestore
+  const db = admin.firestore()
+  await db.collection('users').doc(req.body.uid).delete()
 
   res.status(204).json({
     status: 'success',
