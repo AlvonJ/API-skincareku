@@ -1,30 +1,23 @@
-const express = require('express');
-const app = express();
+process.on('uncaughtException', err => {
+  console.log('UNCAUGHT EXCEPTION!');
+  console.log(err.name, err.message);
 
-const admin = require('firebase-admin');
-const credentials = require('./serviceAccountKey.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(credentials),
+  process.exit(1);
 });
 
-app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
-
-app.post('/signup', async (req, res) => {
-  const userResponse = await admin.auth().createUser({
-    email: req.body.email,
-    password: req.body.password,
-    emailVerified: false,
-    disabled: false,
-  });
-
-  res.json(userResponse);
-});
+const app = require('./app');
 
 const port = process.env.PORT || 8080;
 
 const server = app.listen(port, () => {
   console.log(`Server running on port ${port}...`);
+});
+
+process.on('unhandledRejection', err => {
+  console.log('UNHANDLED REJECTION!');
+  console.log(err.name, err.message);
+
+  server.close(() => {
+    process.exit(1);
+  });
 });
