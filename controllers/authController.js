@@ -15,7 +15,6 @@ exports.register = catchAsync(async (req, res, next) => {
     disabled: false
   })
 
-  console.log(newUser.uid)
   //firestore
   const db = admin.firestore()
   const uid = newUser.uid
