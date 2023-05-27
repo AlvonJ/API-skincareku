@@ -2,11 +2,6 @@ const admin = require('firebase-admin')
 const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 
-const Cookies = require('universal-cookie')
-const useState = require('react')
-
-const cookies = new Cookies()
-
 exports.register = catchAsync(async (req, res, next) => {
   // Error handling
   if (!req.body.email || !req.body.password)
@@ -43,8 +38,6 @@ exports.register = catchAsync(async (req, res, next) => {
     }
   })
 })
-
-exports.login = catchAsync(async (req, res, next) => {})
 
 exports.deleteByEmail = catchAsync(async (req, res, next) => {
   // Error handling
