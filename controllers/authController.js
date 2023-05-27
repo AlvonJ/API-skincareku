@@ -2,6 +2,11 @@ const admin = require('firebase-admin')
 const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 
+const Cookies = require('universal-cookie')
+const useState = require('react')
+
+const cookies = new Cookies()
+
 exports.register = catchAsync(async (req, res, next) => {
   // Error handling
   if (!req.body.email || !req.body.password)
@@ -15,12 +20,18 @@ exports.register = catchAsync(async (req, res, next) => {
     disabled: false
   })
 
+  // Token
+  const uid = newUser.uid
+  const additionalClaims = {} // kalo butuh tambahaan syarat biar filtering gampang
+  const token = await admin.auth().createCustomToken(uid, additionalClaims)
+  console.log('uid :', uid, 'tokenya :', token)
+
   //firestore
   const db = admin.firestore()
-  const uid = newUser.uid
   const userJson = {
     email: newUser.email,
-    uid: uid
+    uid,
+    token
   }
   await db.collection('users').doc(uid).set(userJson)
 
@@ -32,6 +43,8 @@ exports.register = catchAsync(async (req, res, next) => {
     }
   })
 })
+
+exports.login = catchAsync(async (req, res, next) => {})
 
 exports.deleteByEmail = catchAsync(async (req, res, next) => {
   // Error handling
