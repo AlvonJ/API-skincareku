@@ -17,7 +17,11 @@ exports.register = catchAsync(async (req, res, next) => {
 
   // Token
   const uid = newUser.uid
-  const additionalClaims = {} // kalo butuh tambahaan syarat biar filtering gampang
+  const additionalClaims = {
+    rules: {
+      exp: 3600
+    }
+  } // kalo butuh tambahaan syarat biar filtering gampang
   const token = await admin.auth().createCustomToken(uid, additionalClaims)
   console.log('uid :', uid, 'tokenya :', token)
 
@@ -34,10 +38,18 @@ exports.register = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: 'success',
     data: {
-      user: newUser
+      user: newUser,
+      token
     }
   })
 })
+
+// exports.login = catchAsync(async (req, res, next) => {
+//   if (!req.body.email || !req.body.password)
+//     return next(new AppError('Please provide email and password!', 400))
+//   initializeApp()
+//   await admin.auth().signIn
+// })
 
 exports.deleteByEmail = catchAsync(async (req, res, next) => {
   // Error handling
