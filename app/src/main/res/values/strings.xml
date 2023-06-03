@@ -26,4 +26,18 @@
     <string name="success_register">Your account has been created, let\'s login now</string>
     <string name="login_now">Login Now</string>
     <string name="success_register_title">Register Successfully</string>
+    <string name="date">Date</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="gender">Gender</string>
+    <string name="save">Save</string>
+    <string name="tv_skin_problem">What is your skin problem now?</string>
+    <string name="acne">Acne</string>
+    <string name="dry_skin">Dry Skin</string>
+    <string name="submit">Submit</string>
+    <string name="the_information_in_this_page_will_used_for_your_product_and_article_recommendation">The information in this page will used for your product and article recommendation</string>
+    <string name="complete_profile">Last step to finish your registration</string>
+    <string name="oily_skin">Oily Skin</string>
+    <string name="birthdate_error">Birth Date can\'t be empty</string>
+    <string name="gender_error">Gender can\'t be empty</string>
+    <string name="please_select_your_skin_problem">Please select your skin problem</string>
 </resources>

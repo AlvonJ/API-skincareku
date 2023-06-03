@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.ActivityLoginBinding
 import com.bangkit.skincareku.networking.data.DataManager
+import com.bangkit.skincareku.view.biodata.BiodataActivity
 import com.bangkit.skincareku.view.main.MainActivity
 import com.bangkit.skincareku.view.signup.SignupActivity
 import com.google.firebase.FirebaseApp
@@ -56,7 +57,8 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.isSuccessful.observe(this, {
             if (it == true) {
-                val intent = Intent(this, MainActivity::class.java)
+//                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, BiodataActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }else {
