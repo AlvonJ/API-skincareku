@@ -4,8 +4,8 @@ const AppError = require('../utils/appError');
 
 exports.register = catchAsync(async (req, res, next) => {
   // Error handling
-  if (!req.body.email || !req.body.password)
-    return next(new AppError('Please provide email and password!', 400));
+  if (!req.body.email || !req.body.password || !req.body.name)
+    return next(new AppError('Please provide name, email, and password!', 400));
 
   //firebase
   const newUser = await admin.auth().createUser({
@@ -84,5 +84,46 @@ exports.deleteByUid = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: 'success',
     data: null,
+  });
+});
+
+exports.updateUser = catchAsync(async (req, res, next) => {
+  // error handling
+  if (!req.body.email) return next(new AppError('Please provide email!', 400));
+  if (
+    req.body.gender &&
+    req.body.gender.toLowerCase() !== 'male' &&
+    req.body.gender.toLowerCase() !== 'female'
+  )
+    return next(new AppError('Gender value must be male or female!', 400));
+
+  const user = await admin.auth().getUserByEmail(req.body.email);
+
+  // firestore
+  const db = admin.firestore();
+  const userFirestore = (
+    await db.collection('users').doc(user.uid).get()
+  ).data();
+
+  const { skinProblem, allergy, gender, birthDate } = userFirestore;
+
+  await db
+    .collection('users')
+    .doc(user.uid)
+    .update({
+      skinProblem: req.body.skinProblem ?? skinProblem ?? '',
+      allergy: req.body.allergy ?? allergy ?? '',
+      gender: req.body.gender ?? gender ?? '',
+      birthDate: req.body.birthDate ?? birthDate ?? '',
+    });
+
+  const updatedUser = (await db.collection('users').doc(user.uid).get()).data();
+
+  //success
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedUser,
+    },
   });
 });

@@ -43,10 +43,10 @@
  *           description: The auto-generated id of the user
  */
 
-const express = require('express')
-const authController = require('./../controllers/authController')
+const express = require('express');
+const authController = require('./../controllers/authController');
 
-const router = express.Router()
+const router = express.Router();
 
 /**
  * @swagger
@@ -71,7 +71,7 @@ const router = express.Router()
  *       500:
  *         description: Some server error
  */
-router.post('/register', authController.register)
+router.post('/register', authController.register);
 
 /**
  * @swagger
@@ -93,7 +93,7 @@ router.post('/register', authController.register)
  *       404:
  *         description: The user was not found
  */
-router.delete('/deleteByEmail', authController.deleteByEmail)
+router.delete('/deleteByEmail', authController.deleteByEmail);
 
 /**
  * @swagger
@@ -115,6 +115,8 @@ router.delete('/deleteByEmail', authController.deleteByEmail)
  *       404:
  *         description: The user was not found
  */
-router.delete('/deleteByUid', authController.deleteByUid)
+router.delete('/deleteByUid', authController.deleteByUid);
 
-module.exports = router
+router.patch('/updateUser', authController.updateUser);
+
+module.exports = router;
