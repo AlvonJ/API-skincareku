@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.FragmentDashboardBinding
+import com.bangkit.skincareku.networking.response.Article
 import com.bangkit.skincareku.networking.response.Product
 import com.bangkit.skincareku.networking.retrofit.ApiConfig
 
@@ -38,6 +39,10 @@ class DashboardFragment : Fragment() {
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         binding.rvProduct.layoutManager = layoutManager
 
+        val articleLayoutManager = LinearLayoutManager(requireActivity())
+        articleLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        binding.rvArticle.layoutManager = articleLayoutManager
+
         ApiConfig.init(requireActivity())
         dashboardViewModel = DashboardViewModel()
         setupViewModel()
@@ -46,9 +51,14 @@ class DashboardFragment : Fragment() {
 
     private fun setupViewModel() {
         dashboardViewModel.getProductRecommendation()
+        dashboardViewModel.getArticle()
 
         dashboardViewModel.productRecommendationList.observe(requireActivity(), { list ->
             setProductRecommendation(list)
+        })
+
+        dashboardViewModel.articleList.observe(requireActivity(), { list ->
+            setArticle(list)
         })
     }
 
@@ -67,5 +77,21 @@ class DashboardFragment : Fragment() {
 
         val adapter = ProductRecommendationAdapter(listProduct, dashboardViewModel)
         binding.rvProduct.adapter = adapter
+    }
+
+    private fun setArticle(list: List<Article>) {
+        val listArticle = ArrayList<Article>()
+
+        for(item in list) {
+            listArticle.add(
+                Article(
+                    item.title,
+                    item.duration,
+                )
+            )
+        }
+
+        val adapter = ArticleAdapter(listArticle)
+        binding.rvArticle.adapter = adapter
     }
 }
