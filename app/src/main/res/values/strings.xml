@@ -40,4 +40,6 @@
     <string name="birthdate_error">Birth Date can\'t be empty</string>
     <string name="gender_error">Gender can\'t be empty</string>
     <string name="please_select_your_skin_problem">Please select your skin problem</string>
+    <string name="most_recommendation">Most Recommendation</string>
+    <string name="hello">Hi, Henry</string>
 </resources>
