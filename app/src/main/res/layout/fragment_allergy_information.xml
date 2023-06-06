@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.biodata.fragment.SkinHealthInformationFragment">
+    tools:context=".view.biodata.fragment.AllergyInformationFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,53 +13,54 @@
         android:layout_marginHorizontal="20dp">
 
         <TextView
-            android:id="@+id/tv_skinProblem"
+            android:id="@+id/tv_allergy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Do you have allergies to some ingredients?"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textSize="25sp"
-            android:text="@string/tv_skin_problem" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn_acne"
+            android:id="@+id/btn_acids"
             android:background="@drawable/button_outline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/acne"
+            android:text="@string/acids"
             android:textColor="@color/grey"
             app:backgroundTint="@null"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_skinProblem" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_allergy" />
 
         <Button
-            android:id="@+id/btn_drySkin"
+            android:id="@+id/btn_essentialOils"
             android:background="@drawable/button_outline"
             app:backgroundTint="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="@string/dry_skin"
+            android:text="@string/essential_oils"
             android:textColor="@color/grey"
-            app:layout_constraintStart_toEndOf="@+id/btn_acne"
-            app:layout_constraintTop_toBottomOf="@+id/tv_skinProblem" />
+            app:layout_constraintStart_toEndOf="@+id/btn_acids"
+            app:layout_constraintTop_toBottomOf="@+id/tv_allergy" />
 
         <Button
-            android:id="@+id/btn_oilySkin"
+            android:id="@+id/btn_sulfates"
             android:background="@drawable/button_outline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="@string/oily_skin"
+            android:text="@string/sulfates"
             android:textColor="@color/grey"
             app:backgroundTint="@null"
-            app:layout_constraintStart_toEndOf="@+id/btn_drySkin"
-            app:layout_constraintTop_toBottomOf="@+id/tv_skinProblem" />
+            app:layout_constraintStart_toEndOf="@+id/btn_essentialOils"
+            app:layout_constraintTop_toBottomOf="@+id/tv_allergy" />
 
         <TextView
             android:id="@+id/tv_select_problem"
@@ -71,7 +72,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_acne" />
+            app:layout_constraintTop_toBottomOf="@id/btn_acids" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -106,15 +107,12 @@
 
 
     <Button
-        android:id="@+id/btn_next"
+        android:id="@+id/btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:layout_marginHorizontal="20dp"
-        android:text="@string/next"
+        android:text="@string/submit"
         android:layout_gravity="bottom|center"/>
-
-
-
 
 </FrameLayout>

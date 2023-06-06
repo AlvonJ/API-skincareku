@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.FragmentBasicInformationBinding
+import com.bangkit.skincareku.networking.data.DataManager
 import com.bangkit.skincareku.view.biodata.ProgressBarListener
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
@@ -22,6 +23,10 @@ class BasicInformationFragment : Fragment() {
     private val binding get() = _binding!!
     private var progressBarListener: ProgressBarListener? = null
     private val calendar: Calendar = Calendar.getInstance()
+
+    val dataManager: DataManager by lazy {
+        DataManager(requireContext())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,23 +50,22 @@ class BasicInformationFragment : Fragment() {
 
         val genderInputLayout = binding.tilGender
         val gender = binding.etGender
-        val values = listOf("Laki-laki", "Perempuan")
+        val values = listOf("Male", "Female")
 
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, values)
         gender.setAdapter(adapter)
 
         gender.setOnItemClickListener { parent, view, position, id ->
             val selectedValue = parent.getItemAtPosition(position) as String
-            // Handle the selected value
+            dataManager.saveGender(selectedValue)
         }
-
 
         birthdate.setOnClickListener() {
             showDatePickerDialog()
         }
 
 
-        binding.btnSave.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             val birthdateString = binding.etBirthDate.text.toString()
             val genderString = binding.etGender.text.toString()
             if(birthdateString.isEmpty()) {
@@ -115,6 +119,7 @@ class BasicInformationFragment : Fragment() {
 
                 // Update the button text or perform any other action
                 dateButton.setText(formattedDate)
+                dataManager.saveBirthdate(formattedDate)
             }, year, month, day)
 
         // Show the date picker dialog

@@ -26,6 +26,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var progressDialog: ProgressDialog
 
+    val dataManager: DataManager by lazy {
+        DataManager(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -117,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
                 binding.loginTilPassword.error = getString(R.string.insert_password)
             }
             else -> {
+                dataManager.saveEmail(email)
                 Log.d("login_data", "$email - $password")
                 loginViewModel.login(email, password)
             }

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.FragmentSkinHealthInformationBinding
+import com.bangkit.skincareku.networking.data.DataManager
 import com.bangkit.skincareku.view.biodata.ProgressBarListener
 import com.bangkit.skincareku.view.main.MainActivity
 
@@ -18,6 +19,11 @@ class SkinHealthInformationFragment : Fragment() {
     private val binding get() = _binding!!
     private var progressBarListener: ProgressBarListener? = null
     private val skinProblems = mutableListOf<String>()
+
+    val dataManager: DataManager by lazy {
+        DataManager(requireContext())
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,18 +36,18 @@ class SkinHealthInformationFragment : Fragment() {
     ): View? {
         _binding = FragmentSkinHealthInformationBinding.inflate(inflater, container, false)
 
-        progressBarListener?.updateProgressBar(60)
+        progressBarListener?.updateProgressBar(50)
 
-        binding.btnSubmit.setOnClickListener {
+        val fragmentManager = requireActivity().supportFragmentManager
+
+        binding.btnNext.setOnClickListener {
             if(skinProblems.size > 0) {
-                val sharedPref = requireActivity().getSharedPreferences("SKIN_PROBLEM", Context.MODE_PRIVATE)
-                val editor = sharedPref.edit()
-                editor.putString("SKIN_PROBLEM", skinProblems.toString())
-                editor.apply()
-
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+                saveData()
+                fragmentManager.beginTransaction()
+                    .replace(R.id.fl_biodata, AllergyInformationFragment())
+                    .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+                    .addToBackStack(null)
+                    .commit()
             }else {
                 binding.tvSelectProblem.visibility = View.VISIBLE
             }
@@ -92,6 +98,11 @@ class SkinHealthInformationFragment : Fragment() {
                 oilySkin.setBackgroundResource(R.drawable.button_outline_selected)
             }
         }
+    }
+
+    private fun saveData() {
+        var skinProblemString = skinProblems.joinToString(", ")
+        dataManager.saveSkinProblem(skinProblemString)
     }
 
     override fun onDestroyView() {

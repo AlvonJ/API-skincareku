@@ -30,6 +30,7 @@
     <string name="birthdate">Birthdate</string>
     <string name="gender">Gender</string>
     <string name="save">Save</string>
+    <string name="next">Next</string>
     <string name="tv_skin_problem">What is your skin problem now?</string>
     <string name="acne">Acne</string>
     <string name="dry_skin">Dry Skin</string>
@@ -42,4 +43,7 @@
     <string name="please_select_your_skin_problem">Please select your skin problem</string>
     <string name="most_recommendation">Most Recommendation</string>
     <string name="hello">Hi, Henry</string>
+    <string name="acids">Acids</string>
+    <string name="essential_oils">Essential Oils</string>
+    <string name="sulfates">Sulfates</string>
 </resources>
