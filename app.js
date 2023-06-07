@@ -40,8 +40,19 @@ const options = {
   },
   apis: ['./routes/*.js']
 }
+
+// wew
+const swaggerOptions = {
+  explorer: true,
+  customCss: '.swagger-ui textarea { min-height:60px }',
+  swaggerOptions: {
+    persistAuthorization: true,
+    tryItOutEnabled: false //<---- enable "try it out enabled" here
+  }
+}
+
 const specs = swaggerJsDoc(options)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerOptions))
 
 // ROUTES
 app.use('/users', userRouter)

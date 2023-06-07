@@ -41,12 +41,58 @@
  *         uid:
  *           type: string
  *           description: The auto-generated id of the user
+ *     updateUser:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           description: The email of user
+ *         skinProblem:
+ *           type: string
+ *           description: The skin problem of user
+ *         gender:
+ *           type: string
+ *           description: The gender of user
+ *         allergy:
+ *           type: string
+ *           description: The allergy of user
+ *         birthDate:
+ *           type: string
+ *           description: The birthDate of user
+ *     getUserData:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           description: The email of user
  */
 
-const express = require('express');
-const authController = require('./../controllers/authController');
+const express = require('express')
+const authController = require('./../controllers/authController')
 
-const router = express.Router();
+const router = express.Router()
+
+/**
+ * @swagger
+ * /users/getUserData:
+ *   get:
+ *     summary: get user data by user email
+ *     tags: [Users]
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/getUserData'
+ *
+ *     responses:
+ *       200:
+ *         description: get user data
+ *       404:
+ *         description: The user was not found
+ */
+router.get('/getUserData', authController.getUserData)
 
 /**
  * @swagger
@@ -55,7 +101,7 @@ const router = express.Router();
  *   description: The Users managing API
  * /users/register:
  *  post:
- *     summary: Create a new book
+ *     summary: Register new user (required email & password)
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -66,18 +112,18 @@ const router = express.Router();
  *
  *     responses:
  *       201:
- *         description: The created book.
+ *         description: The user was created
 
  *       500:
  *         description: Some server error
  */
-router.post('/register', authController.register);
+router.post('/register', authController.register)
 
 /**
  * @swagger
  * /users/deleteByEmail:
  *   delete:
- *     summary: delete user by email address
+ *     summary: delete user by email address (required email)
  *     tags: [Users]
  *
  *     requestBody:
@@ -93,13 +139,13 @@ router.post('/register', authController.register);
  *       404:
  *         description: The user was not found
  */
-router.delete('/deleteByEmail', authController.deleteByEmail);
+router.delete('/deleteByEmail', authController.deleteByEmail)
 
 /**
  * @swagger
  * /users/deleteByUid:
  *   delete:
- *     summary: delete user by Uid
+ *     summary: delete user by Uid (Required Uid)
  *     tags: [Users]
  *
  *     requestBody:
@@ -115,8 +161,28 @@ router.delete('/deleteByEmail', authController.deleteByEmail);
  *       404:
  *         description: The user was not found
  */
-router.delete('/deleteByUid', authController.deleteByUid);
+router.delete('/deleteByUid', authController.deleteByUid)
 
-router.patch('/updateUser', authController.updateUser);
+/**
+ * @swagger
+ * /users/updateUser:
+ *   patch:
+ *     summary: update user (required email)
+ *     tags: [Users]
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/updateUser'
+ *
+ *     responses:
+ *       200:
+ *         description: The user was updated
+ *       404:
+ *         description: The user was not found
+ */
+router.patch('/updateUser', authController.updateUser)
 
-module.exports = router;
+module.exports = router
