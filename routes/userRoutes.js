@@ -75,8 +75,8 @@ const router = express.Router()
 /**
  * @swagger
  * /users/getUserData:
- *   get:
- *     summary: get user data by user email
+ *   post:
+ *     summary: post user data by user email
  *     tags: [Users]
  *
  *     requestBody:
@@ -92,7 +92,7 @@ const router = express.Router()
  *       404:
  *         description: The user was not found
  */
-router.get('/getUserData', authController.getUserData)
+router.post('/getUserData', authController.getUserData)
 
 /**
  * @swagger
