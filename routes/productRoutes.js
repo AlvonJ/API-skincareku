@@ -2,69 +2,45 @@
  * @swagger
  * components:
  *   schemas:
- *     Users:
+ *     Products:
  *       type: object
  *       properties:
- *         uid:
+ *         id:
  *           type: string
- *           description: The auto-generated id of the user
- *         email:
+ *           description: The auto-generated id of the product
+ *         skin type:
  *           type: string
- *           description: The email of user
- *         token:
+ *           description: The skin type of product
+ *         product:
  *           type: string
- *           description: The created token for user
- *         name:
+ *           description: The type of product
+ *         link:
  *           type: string
- *           description : Name of created user
- *     UserCreate:
+ *           description: The link of product to online shop
+ *         title:
+ *           type: string
+ *           description: The title of product
+ *         category:
+ *           type: string
+ *           description: The category of product
+ *         brand:
+ *           type: string
+ *           description: The brand of product
+ *     getProduct:
  *       type: object
  *       properties:
- *         email:
+ *         id:
  *           type: string
- *           description: The email of user
- *         password:
- *           type : string
- *           description : user password
- *         name:
- *           type: string
- *           description : Name of created user
- *     UserDeleteByEmail:
+ *           description: The auto-generated id of the product
+ *     filterProduct:
  *       type: object
  *       properties:
- *         email:
+ *         field:
  *           type: string
- *           description: The email of user
- *     UserDeleteByUid:
- *       type: object
- *       properties:
- *         uid:
+ *           description: field that want to filtered(look at Products's Schema)
+ *         value:
  *           type: string
- *           description: The auto-generated id of the user
- *     updateUser:
- *       type: object
- *       properties:
- *         email:
- *           type: string
- *           description: The email of user
- *         skinProblem:
- *           type: string
- *           description: The skin problem of user
- *         gender:
- *           type: string
- *           description: The gender of user
- *         allergy:
- *           type: string
- *           description: The allergy of user
- *         birthDate:
- *           type: string
- *           description: The birthDate of user
- *     getUserData:
- *       type: object
- *       properties:
- *         email:
- *           type: string
- *           description: The email of user
+ *           description: the value that want to be shown
  */
 
 const express = require('express')
@@ -74,26 +50,61 @@ const router = express.Router()
 
 /**
  * @swagger
- * /users/getUserData:
+ * /products/getAll:
+ *   get:
+ *     summary: get all data of products
+ *     tags: [Products]
+ *
+ *     responses:
+ *       200:
+ *         description: get all products data
+ *       404:
+ *         description: The products was not found
+ */
+router.get('/getAll', productController.getAll)
+
+/**
+ * @swagger
+ * /products/getAllFiltered:
  *   post:
- *     summary: post user data by user email
- *     tags: [Users]
+ *     summary: get all data of products already filtered(field,value required)
+ *     tags: [Products]
  *
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/getUserData'
+ *             $ref: '#/components/schemas/filterProduct'
  *
  *     responses:
  *       200:
- *         description: get user data
+ *         description: get products data already filtered
  *       404:
- *         description: The user was not found
+ *         description: The products was not found
  */
-router.get('/getAll', productController.getAll)
 router.post('/getAllFiltered', productController.getAllFiltered)
+
+/**
+ * @swagger
+ * /products/getSingle:
+ *   post:
+ *     summary: get single data of product(id required)
+ *     tags: [Products]
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/getProduct'
+ *
+ *     responses:
+ *       200:
+ *         description: get product data
+ *       404:
+ *         description: The product was not found
+ */
 router.post('/getSingle', productController.getSingle)
 
 module.exports = router

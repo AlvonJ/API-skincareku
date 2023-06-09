@@ -30,12 +30,12 @@ const options = {
     },
     servers: [
       {
-        // development
-        url: 'http://localhost:8080/'
-      },
-      {
         // release
         url: 'https://services-skincareku-5ctldki4wq-et.a.run.app/'
+      },
+      {
+        // development
+        url: 'http://localhost:8080/'
       }
     ]
   },
