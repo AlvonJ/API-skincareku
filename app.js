@@ -2,6 +2,7 @@ const express = require('express')
 const admin = require('firebase-admin')
 const credentials = require('./serviceAccountKey.json')
 const userRouter = require('./routes/userRoutes')
+const productRouter = require('./routes/productRoutes')
 const defaultRouter = require('./routes/defaultRoutes')
 const globalErrorHandler = require('./controllers/errorController')
 const AppError = require('./utils/appError')
@@ -41,13 +42,13 @@ const options = {
   apis: ['./routes/*.js']
 }
 
-// wew
+// swagger
 const swaggerOptions = {
   explorer: true,
   customCss: '.swagger-ui textarea { min-height:60px }',
   swaggerOptions: {
     persistAuthorization: true,
-    tryItOutEnabled: false //<---- enable "try it out enabled" here
+    tryItOutEnabled: false
   }
 }
 
@@ -56,6 +57,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerOptions))
 
 // ROUTES
 app.use('/users', userRouter)
+app.use('/products', productRouter)
 
 app.use('/', defaultRouter)
 
