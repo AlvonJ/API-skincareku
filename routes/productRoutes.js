@@ -93,6 +93,7 @@ const router = express.Router()
  *         description: The user was not found
  */
 router.get('/getAll', productController.getAll)
+router.post('/getAllFiltered', productController.getAllFiltered)
 router.post('/getSingle', productController.getSingle)
 
 module.exports = router

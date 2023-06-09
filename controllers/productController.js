@@ -8,7 +8,22 @@ exports.getAll = catchAsync(async (req, res, next) => {
   const product = await productRef.get()
   let productArr = []
   product.forEach(doc => {
-    productArr.push(doc.data())
+    productArr.push({ id: doc.id, data: doc.data() })
+  })
+  res.status(200).json({
+    status: 'Success',
+    data: productArr
+  })
+})
+
+exports.getAllFiltered = catchAsync(async (req, res, next) => {
+  const { field, value } = req.body
+  const db = admin.firestore()
+  const productRef = db.collection('skincare')
+  const product = await productRef.where(field, '==', value).get()
+  let productArr = []
+  product.forEach(doc => {
+    productArr.push({ id: doc.id, data: doc.data() })
   })
   res.status(200).json({
     status: 'Success',
