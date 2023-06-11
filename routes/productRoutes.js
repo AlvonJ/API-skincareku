@@ -8,24 +8,38 @@
  *         id:
  *           type: string
  *           description: The auto-generated id of the product
- *         skin type:
- *           type: string
- *           description: The skin type of product
- *         product:
- *           type: string
- *           description: The type of product
- *         link:
+ *         product_url:
  *           type: string
  *           description: The link of product to online shop
- *         title:
+ *         image_url:
  *           type: string
- *           description: The title of product
+ *           description: The link of image of the product
+ *         rating:
+ *           type: integer
+ *           description: The rating of product
+ *         ingredients:
+ *           type: array
+ *           items:
+ *            type: string
+ *           description: The ingredients of product
+ *         description:
+ *           type: string
+ *           description: The description of product
+ *         bad_reviews:
+ *           type: integer
+ *           description: The total number of bad reviews of product
  *         category:
  *           type: string
  *           description: The category of product
+ *         product_name:
+ *           type: string
+ *           description: The name of product
  *         brand:
  *           type: string
  *           description: The brand of product
+ *         good_reviews:
+ *           type: integer
+ *           description: The total number of good reviews of product
  *     getProduct:
  *       type: object
  *       properties:
@@ -41,6 +55,14 @@
  *         value:
  *           type: string
  *           description: the value that want to be shown
+ *     filterProductIngredients:
+ *       type: object
+ *       properties:
+ *         filter:
+ *           type: array
+ *           items:
+ *            type: string
+ *           description: field that want to filtered by Ingredients(filter must be in Array)
  */
 
 const express = require('express')
@@ -50,6 +72,9 @@ const router = express.Router()
 
 /**
  * @swagger
+ *  tags:
+ *   name: Products
+ *   description: The Products managing API
  * /products/getAll:
  *   get:
  *     summary: get all data of products
@@ -84,6 +109,31 @@ router.get('/getAll', productController.getAll)
  *         description: The products was not found
  */
 router.post('/getAllFiltered', productController.getAllFiltered)
+
+/**
+ * @swagger
+ * /products/getAllFilteredIngredients:
+ *   post:
+ *     summary: get all data of products already filtered by ingredients(filter required in Array)
+ *     tags: [Products]
+ *
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/filterProductIngredients'
+ *
+ *     responses:
+ *       200:
+ *         description: get products data already filtered
+ *       404:
+ *         description: The products was not found
+ */
+router.post(
+  '/getAllFilteredIngredients',
+  productController.getFilteredIngredients
+)
 
 /**
  * @swagger
