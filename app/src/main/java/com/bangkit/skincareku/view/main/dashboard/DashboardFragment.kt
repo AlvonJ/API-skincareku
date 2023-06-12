@@ -1,5 +1,6 @@
 package com.bangkit.skincareku.view.main.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import com.bangkit.skincareku.databinding.FragmentDashboardBinding
 import com.bangkit.skincareku.networking.response.Article
 import com.bangkit.skincareku.networking.response.Product
 import com.bangkit.skincareku.networking.retrofit.ApiConfig
+import com.bangkit.skincareku.view.profile.ProfileActivity
 
 class DashboardFragment : Fragment() {
 
@@ -46,6 +48,11 @@ class DashboardFragment : Fragment() {
         ApiConfig.init(requireActivity())
         dashboardViewModel = DashboardViewModel()
         setupViewModel()
+
+        binding.ivProfile.setOnClickListener {
+            val mIntent = Intent(requireActivity(), ProfileActivity::class.java)
+            startActivity(mIntent)
+        }
 
     }
 

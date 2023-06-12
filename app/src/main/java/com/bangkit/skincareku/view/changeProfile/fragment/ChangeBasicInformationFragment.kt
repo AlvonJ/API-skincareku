@@ -13,15 +13,18 @@ import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.FragmentBasicInformationBinding
 import com.bangkit.skincareku.networking.data.DataManager
 import com.bangkit.skincareku.view.biodata.ChangeProfileProgressBarListener
+import com.bangkit.skincareku.view.biodata.ChangeProfileViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class BasicInformationFragment : Fragment() {
+class ChangeBasicInformationFragment : Fragment() {
 
     private var _binding: FragmentBasicInformationBinding? = null
     private val binding get() = _binding!!
     private var changeProfileProgressBarListener: ChangeProfileProgressBarListener? = null
     private val calendar: Calendar = Calendar.getInstance()
+
+    private lateinit var changeProfileViewModel: ChangeProfileViewModel
 
     val dataManager: DataManager by lazy {
         DataManager(requireContext())
@@ -40,6 +43,16 @@ class BasicInformationFragment : Fragment() {
         _binding = FragmentBasicInformationBinding.inflate(inflater, container, false)
 
         changeProfileProgressBarListener?.updateProgressBar(30)
+
+        changeProfileViewModel = ChangeProfileViewModel()
+        changeProfileViewModel.getUserByEmail(dataManager.getEmail().toString())
+        var genderOld: String = ""
+        changeProfileViewModel.profile.observe(requireActivity(), {
+            binding.etBirthDate.setText(it.data?.fieldsProto?.birthDate?.stringValue.toString())
+            genderOld = it.data?.fieldsProto?.gender?.stringValue.toString()
+        })
+
+        binding.etGender.setText(genderOld)
 
         val changeSkinHealthInformationFragment = ChangeSkinHealthInformationFragment()
         val fragmentManager = requireActivity().supportFragmentManager

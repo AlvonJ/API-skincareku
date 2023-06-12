@@ -1,24 +1,20 @@
 package com.bangkit.skincareku.view.login
 
 import android.app.ProgressDialog
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.ActivityLoginBinding
 import com.bangkit.skincareku.networking.data.DataManager
-import com.bangkit.skincareku.view.biodata.BiodataActivity
+import com.bangkit.skincareku.view.biodata.ChangeProfileActivity
 import com.bangkit.skincareku.view.main.MainActivity
 import com.bangkit.skincareku.view.signup.SignupActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -38,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.hide()
         FirebaseApp.initializeApp(this)
         auth = FirebaseAuth.getInstance()
+        progressDialog = ProgressDialog(this)
 
         setupViewModel()
         setup()
@@ -49,9 +46,9 @@ class LoginActivity : AppCompatActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if (currentUser != null) {
-//            val intent = Intent(this, MainActivity::class.java)
-//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//            startActivity(intent)
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
     }
 
@@ -60,12 +57,20 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = LoginViewModel(dataManager)
 
         loginViewModel.isSuccessful.observe(this, {
+            println("isSuccessful: $it")
             if (it == true) {
-//                val intent = Intent(this, MainActivity::class.java)
-//                val intent = Intent(this, BiodataActivity::class.java)
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+                loginViewModel.isFilled.observe(this, {
+                    println("isFilled: $it")
+                    if (it == true) {
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                    }else {
+                        val intent = Intent(this, ChangeProfileActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                    }
+                })
             }else {
                 Toast.makeText(this, getString(R.string.login_error), Toast.LENGTH_SHORT).show()
             }
@@ -73,7 +78,6 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.isLoading.observe(this, {
             if (it) {
-                progressDialog = ProgressDialog(this)
                 progressDialog.show()
                 progressDialog.setContentView(R.layout.item_progress_dialog)
                 progressDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -124,6 +128,7 @@ class LoginActivity : AppCompatActivity() {
             else -> {
                 dataManager.saveEmail(email)
                 Log.d("login_data", "$email - $password")
+                loginViewModel.getUserByEmail(email)
                 loginViewModel.login(email, password)
             }
         }

@@ -16,7 +16,7 @@ import com.bangkit.skincareku.view.biodata.ChangeProfileViewModel
 import com.bangkit.skincareku.view.biodata.ChangeProfileProgressBarListener
 import com.bangkit.skincareku.view.main.MainActivity
 
-class AllergyInformationFragment : Fragment() {
+class ChangeAllergyInformationFragment : Fragment() {
 
     private var _binding: FragmentAllergyInformationBinding? = null
     private val binding get() = _binding!!
@@ -40,10 +40,28 @@ class AllergyInformationFragment : Fragment() {
         _binding = FragmentAllergyInformationBinding.inflate(inflater, container, false)
 
         changeProfileViewModel = ChangeProfileViewModel()
+        setupViewModel()
+        changeProfileViewModel.getUserByEmail(dataManager.getEmail().toString())
+        changeProfileViewModel.profile.observe(requireActivity(), {
+            allergies.addAll(it.data?.fieldsProto?.allergy?.stringValue.toString().split(", ") as MutableList<String>)
+            println(allergies)
+            if(allergies.contains("Acids")) {
+                binding.btnAcids.setTextColor(resources.getColor(R.color.blue))
+                binding.btnAcids.setBackgroundResource(R.drawable.button_outline_selected)
+            }
+            if(allergies.contains("Essential Oils")) {
+                binding.btnEssentialOils.setTextColor(resources.getColor(R.color.blue))
+                binding.btnEssentialOils.setBackgroundResource(R.drawable.button_outline_selected)
+            }
+            if(allergies.contains("Sulfates")) {
+                binding.btnSulfates.setTextColor(resources.getColor(R.color.blue))
+                binding.btnSulfates.setBackgroundResource(R.drawable.button_outline_selected)
+            }
+        })
 
         changeProfileProgressBarListener?.updateProgressBar(80)
 
-        setupViewModel()
+
 
         binding.btnSubmit.setOnClickListener{
             if(allergies.size > 0) {
@@ -141,7 +159,7 @@ class AllergyInformationFragment : Fragment() {
                 sulfates.setTextColor(resources.getColor(R.color.grey))
                 sulfates.setBackgroundResource(R.drawable.button_outline)
             } else {
-                allergies.add("Oily Skin")
+                allergies.add("Sulfates")
                 sulfates.setTextColor(resources.getColor(R.color.blue))
                 sulfates.setBackgroundResource(R.drawable.button_outline_selected)
             }

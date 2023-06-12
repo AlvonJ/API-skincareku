@@ -3,6 +3,7 @@ package com.bangkit.skincareku.networking.retrofit
 import com.bangkit.skincareku.networking.response.Product
 import com.bangkit.skincareku.networking.response.RegisterResponse
 import com.bangkit.skincareku.networking.response.UpdateUserResponse
+import com.bangkit.skincareku.networking.response.UserDataResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -31,5 +32,11 @@ interface ApiService {
 
     @GET("products")
     fun getProducts(): Call<Product>
+
+    @FormUrlEncoded
+    @POST("users/getUserData")
+    fun getUserByEmail(
+        @Field("email") email: String
+    ): Call<UserDataResponse>
 
 }

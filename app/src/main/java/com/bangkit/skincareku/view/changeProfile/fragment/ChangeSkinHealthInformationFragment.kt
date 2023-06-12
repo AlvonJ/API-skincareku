@@ -10,13 +10,16 @@ import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.FragmentSkinHealthInformationBinding
 import com.bangkit.skincareku.networking.data.DataManager
 import com.bangkit.skincareku.view.biodata.ChangeProfileProgressBarListener
+import com.bangkit.skincareku.view.biodata.ChangeProfileViewModel
 
-class SkinHealthInformationFragment : Fragment() {
+class ChangeSkinHealthInformationFragment : Fragment() {
 
     private var _binding: FragmentSkinHealthInformationBinding? = null
     private val binding get() = _binding!!
     private var changeProfileProgressBarListener: ChangeProfileProgressBarListener? = null
     private val skinProblems = mutableListOf<String>()
+
+    private lateinit var changeProfileViewModel: ChangeProfileViewModel
 
     val dataManager: DataManager by lazy {
         DataManager(requireContext())
@@ -35,6 +38,25 @@ class SkinHealthInformationFragment : Fragment() {
         _binding = FragmentSkinHealthInformationBinding.inflate(inflater, container, false)
 
         changeProfileProgressBarListener?.updateProgressBar(50)
+        changeProfileViewModel = ChangeProfileViewModel()
+        changeProfileViewModel.getUserByEmail(dataManager.getEmail().toString())
+
+        changeProfileViewModel.profile.observe(requireActivity(), {
+            skinProblems.addAll(it.data?.fieldsProto?.skinProblem?.stringValue.toString().split(", ").toTypedArray())
+            println(skinProblems)
+            if(skinProblems.contains("Acne")) {
+                binding.btnAcne.setTextColor(resources.getColor(R.color.blue))
+                binding.btnAcne.setBackgroundResource(R.drawable.button_outline_selected)
+            }
+            if(skinProblems.contains("Dry Skin")) {
+                binding.btnDrySkin.setTextColor(resources.getColor(R.color.blue))
+                binding.btnDrySkin.setBackgroundResource(R.drawable.button_outline_selected)
+            }
+            if(skinProblems.contains("Oily Skin")) {
+                binding.btnOilySkin.setTextColor(resources.getColor(R.color.blue))
+                binding.btnOilySkin.setBackgroundResource(R.drawable.button_outline_selected)
+            }
+        })
 
         val fragmentManager = requireActivity().supportFragmentManager
 
@@ -58,6 +80,8 @@ class SkinHealthInformationFragment : Fragment() {
     }
 
     private fun setupSkinProblem () {
+
+
         val acne = binding.btnAcne
         acne.setOnClickListener{
             if(skinProblems.contains("Acne")) {

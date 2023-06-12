@@ -10,7 +10,7 @@ import com.bangkit.skincareku.view.biodata.fragment.ChangeBasicInformationFragme
 import com.bangkit.skincareku.view.biodata.fragment.ChangeSkinHealthInformationFragment
 
 
-class BiodataActivity : AppCompatActivity(), ChangeProfileProgressBarListener {
+class ChangeProfileActivity : AppCompatActivity(), ChangeProfileProgressBarListener {
     private lateinit var binding: ActivityBiodataBinding
     private lateinit var progressBar: ProgressBar
 

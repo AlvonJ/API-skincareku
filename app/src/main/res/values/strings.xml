@@ -46,4 +46,8 @@
     <string name="acids">Acids</string>
     <string name="essential_oils">Essential Oils</string>
     <string name="sulfates">Sulfates</string>
+    <string name="your_information">Your Information</string>
+    <string name="change_profile">Change Profile</string>
+    <string name="logout">Logout</string>
+    <string name="assesments_test">Assesments Test</string>
 </resources>

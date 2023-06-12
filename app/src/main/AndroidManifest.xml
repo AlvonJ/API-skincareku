@@ -16,10 +16,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".view.profile.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.article.DetailArticleActivity"
             android:exported="false" />
         <activity
-            android:name=".view.biodata.BiodataActivity"
+            android:name=".view.biodata.ChangeProfileActivity"
             android:exported="false" />
         <activity
             android:name=".view.main.faceAnalyze.FaceAnalyzeActivity"
