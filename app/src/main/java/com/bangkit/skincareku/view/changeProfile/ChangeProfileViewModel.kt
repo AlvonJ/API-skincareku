@@ -30,7 +30,8 @@ class ChangeProfileViewModel : ViewModel() {
         _isConnectionError.value = false
         _isSuccessful.value = false
 
-        val client = ApiConfig.getApiService().updateProfile(email, gender, skinProblem, allergy, birthDate)
+        val baseUrl = "https://services-skincareku-5ctldki4wq-et.a.run.app/"
+        val client = ApiConfig.getApiService(baseUrl).updateProfile(email, gender, skinProblem, allergy, birthDate)
         client.enqueue(object : Callback<UpdateUserResponse> {
             override fun onResponse(
                 call: Call<UpdateUserResponse>,
@@ -57,7 +58,8 @@ class ChangeProfileViewModel : ViewModel() {
         _isConnectionError.value = false
         _isGetProfileSuccessful.value = false
 
-        val client = ApiConfig.getApiService().getUserByEmail(email)
+        val baseUrl = "https://services-skincareku-5ctldki4wq-et.a.run.app/"
+        val client = ApiConfig.getApiService(baseUrl).getUserByEmail(email)
         client.enqueue(object : Callback<UserDataResponse> {
             override fun onResponse(
                 call: Call<UserDataResponse>,

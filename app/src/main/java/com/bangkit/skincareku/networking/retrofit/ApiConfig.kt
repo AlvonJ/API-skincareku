@@ -16,7 +16,7 @@ class ApiConfig {
         }
 
 
-        fun getApiService(): ApiService {
+        fun getApiService(baseUrl: String): ApiService {
 
             val client = OkHttpClient.Builder()
                 .addInterceptor{chain ->
@@ -27,7 +27,7 @@ class ApiConfig {
                     chain.proceed(request)}
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://services-skincareku-5ctldki4wq-et.a.run.app/")
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

@@ -1,15 +1,9 @@
 package com.bangkit.skincareku.networking.retrofit
 
-import com.bangkit.skincareku.networking.response.Product
-import com.bangkit.skincareku.networking.response.RegisterResponse
-import com.bangkit.skincareku.networking.response.UpdateUserResponse
-import com.bangkit.skincareku.networking.response.UserDataResponse
+import com.bangkit.skincareku.networking.response.*
+import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.PATCH
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
     @FormUrlEncoded
@@ -38,5 +32,11 @@ interface ApiService {
     fun getUserByEmail(
         @Field("email") email: String
     ): Call<UserDataResponse>
+
+    @Multipart
+    @POST("predict")
+    fun predictImage(
+        @Part image: MultipartBody.Part
+    ): Call<ModelResponse>
 
 }

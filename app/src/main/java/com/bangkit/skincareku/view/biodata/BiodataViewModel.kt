@@ -23,7 +23,8 @@ class BiodataViewModel : ViewModel() {
         _isConnectionError.value = false
         _isSuccessful.value = false
 
-        val client = ApiConfig.getApiService().updateProfile(email, gender, skinProblem, allergy, birthDate)
+        val baseUrl = "https://services-skincareku-5ctldki4wq-et.a.run.app/"
+        val client = ApiConfig.getApiService(baseUrl).updateProfile(email, gender, skinProblem, allergy, birthDate)
         client.enqueue(object : Callback<UpdateUserResponse> {
             override fun onResponse(
                 call: Call<UpdateUserResponse>,
