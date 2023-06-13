@@ -40,7 +40,8 @@ class ProfileViewModel : ViewModel() {
         _isConnectionError.value = false
         _isGetProfileSuccessful.value = false
 
-        val client = ApiConfig.getApiService().getUserByEmail(email)
+        val baseUrl = "https://services-skincareku-5ctldki4wq-et.a.run.app/"
+        val client = ApiConfig.getApiService(baseUrl).getUserByEmail(email)
         client.enqueue(object : Callback<UserDataResponse> {
             override fun onResponse(
                 call: Call<UserDataResponse>,

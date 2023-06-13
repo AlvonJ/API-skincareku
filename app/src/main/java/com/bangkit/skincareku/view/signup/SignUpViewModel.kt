@@ -25,7 +25,8 @@ class SignUpViewModel : ViewModel() {
         _isConnectionError.value = false
         _isLoading.value = true
 
-        val client = ApiConfig.getApiService().register(name, email, password)
+        val baseUrl = "https://services-skincareku-5ctldki4wq-et.a.run.app/"
+        val client = ApiConfig.getApiService(baseUrl).register(name, email, password)
         client.enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(
                 call: Call<RegisterResponse>,
