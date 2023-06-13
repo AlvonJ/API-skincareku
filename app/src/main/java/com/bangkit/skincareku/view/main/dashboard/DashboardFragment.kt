@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.FragmentDashboardBinding
+import com.bangkit.skincareku.networking.data.DataManager
 import com.bangkit.skincareku.networking.response.Article
-import com.bangkit.skincareku.networking.response.Product
+import com.bangkit.skincareku.networking.response.GetAllProductItem
 import com.bangkit.skincareku.networking.retrofit.ApiConfig
 import com.bangkit.skincareku.view.profile.ProfileActivity
 
@@ -57,8 +57,34 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        dashboardViewModel.getProductRecommendation()
+
+        val acneIngredients = listOf("Salicylic Acid")
+        // Sulfur
+
+        val comedoIngredients = listOf("Retinol")
+        // Clay", "Retinol", "Niacinamide", "Zinc", "Salicylic Acid", "Benzoyl Peroxide"
+
+        val clearSkinIngredients = listOf("Niacinamide")
+
+        val dataManager = DataManager(requireContext())
+        dashboardViewModel.getUserByEmail(dataManager.getEmail().toString())
+
         dashboardViewModel.getArticle()
+
+        dashboardViewModel.profile.observe(requireActivity(), { profile ->
+            val skinProblemArray = profile.data?.fieldsProto?.skinProblem?.stringValue?.split(", ")?.toTypedArray()
+            val skinProblemArrayList = ArrayList<String>(skinProblemArray?.toList())
+            println("getProductRecommendationDashboard")
+            println(skinProblemArrayList)
+            println(acneIngredients)
+            if (skinProblemArrayList.contains("Acne")) {
+                dashboardViewModel.getProductRecommendation(acneIngredients)
+            }else if(skinProblemArrayList.contains("Comedo")){
+                dashboardViewModel.getProductRecommendation(comedoIngredients)
+            }else if(skinProblemArrayList.contains("Clear Skin")){
+                dashboardViewModel.getProductRecommendation(clearSkinIngredients)
+            }
+        })
 
         dashboardViewModel.productRecommendationList.observe(requireActivity(), { list ->
             setProductRecommendation(list)
@@ -69,20 +95,19 @@ class DashboardFragment : Fragment() {
         })
     }
 
-    private fun setProductRecommendation(list: List<Product>) {
-        val listProduct = ArrayList<Product>()
+    private fun setProductRecommendation(list: List<GetAllProductItem>) {
+        val listProduct = ArrayList<GetAllProductItem>()
 
         for(item in list) {
             listProduct.add(
-                Product(
-                    item.title,
-                    item.description,
-                    item.like
+                GetAllProductItem(
+                    item.data,
+                    item.id
                 )
             )
         }
 
-        val adapter = ProductRecommendationAdapter(listProduct, dashboardViewModel)
+        val adapter = ProductRecommendationAdapter(listProduct)
         binding.rvProduct.adapter = adapter
     }
 

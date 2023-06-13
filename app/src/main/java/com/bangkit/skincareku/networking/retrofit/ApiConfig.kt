@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.bangkit.skincareku.networking.data.DataManager
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,8 +18,12 @@ class ApiConfig {
 
 
         fun getApiService(baseUrl: String): ApiService {
+            val loggingInterceptor = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY // Set the desired logging level
+            }
 
             val client = OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
                 .addInterceptor{chain ->
                     val original = chain.request()
                     val requestBuilder = original.newBuilder()

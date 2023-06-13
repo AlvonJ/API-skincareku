@@ -3,10 +3,14 @@ package com.bangkit.skincareku.view.main.dashboard
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.ItemProductBinding
+import com.bangkit.skincareku.networking.response.GetAllProductItem
 import com.bangkit.skincareku.networking.response.Product
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
-class ProductRecommendationAdapter (private val productRecommendationList: ArrayList<Product>, private val viewModel: DashboardViewModel) :
+class ProductRecommendationAdapter (private val productRecommendationList: ArrayList<GetAllProductItem>) :
     RecyclerView.Adapter<ProductRecommendationAdapter.ListViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -25,10 +29,19 @@ class ProductRecommendationAdapter (private val productRecommendationList: Array
     class ListViewHolder(var binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(productItem: Product) {
-            binding.tvProductTitle.text = productItem.title
-            binding.tvProductDescription.text = productItem.description
-            binding.tvLikesCount.text = productItem.like.toString()
+        fun bind(productItem: GetAllProductItem) {
+            binding.tvProductTitle.text = productItem.data.productName
+            binding.tvProductDescription.text = productItem.data.description
+            binding.tvPrice.text = "$ " +  productItem.data.price
+            binding.tvRating.text = productItem.data.rating.toString()
+
+            Glide.with(itemView.context)
+                .load(productItem.data.imageUrl)
+                .apply(RequestOptions()
+                    .placeholder(R.drawable.product)
+                    .override(300, 300)
+                    .centerCrop())
+                .into(binding.ivProduct)
         }
     }
 

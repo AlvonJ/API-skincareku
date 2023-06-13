@@ -36,29 +36,29 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_skinProblem" />
 
         <Button
-            android:id="@+id/btn_drySkin"
+            android:id="@+id/btn_comedo"
             android:background="@drawable/button_outline"
             app:backgroundTint="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="@string/dry_skin"
+            android:text="@string/comedo"
             android:textColor="@color/grey"
             app:layout_constraintStart_toEndOf="@+id/btn_acne"
             app:layout_constraintTop_toBottomOf="@+id/tv_skinProblem" />
 
         <Button
-            android:id="@+id/btn_oilySkin"
+            android:id="@+id/btn_clearSkin"
             android:background="@drawable/button_outline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:text="@string/oily_skin"
+            android:text="Clear Skin"
             android:textColor="@color/grey"
             app:backgroundTint="@null"
-            app:layout_constraintStart_toEndOf="@+id/btn_drySkin"
+            app:layout_constraintStart_toEndOf="@+id/btn_comedo"
             app:layout_constraintTop_toBottomOf="@+id/tv_skinProblem" />
 
         <TextView

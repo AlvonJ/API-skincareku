@@ -71,29 +71,29 @@ class SkinHealthInformationFragment : Fragment() {
             }
         }
 
-        val drySkin = binding.btnDrySkin
-        drySkin.setOnClickListener{
-            if(skinProblems.contains("Dry Skin")) {
-                skinProblems.remove("Dry Skin")
-                drySkin.setTextColor(resources.getColor(R.color.grey))
-                drySkin.setBackgroundResource(R.drawable.button_outline)
+        val comedo = binding.btnComedo
+        comedo.setOnClickListener{
+            if(skinProblems.contains("Comedo")) {
+                skinProblems.remove("Comedo")
+                comedo.setTextColor(resources.getColor(R.color.grey))
+                comedo.setBackgroundResource(R.drawable.button_outline)
             } else {
-                skinProblems.add("Dry Skin")
-                drySkin.setTextColor(resources.getColor(R.color.blue))
-                drySkin.setBackgroundResource(R.drawable.button_outline_selected)
+                skinProblems.add("Comedo")
+                comedo.setTextColor(resources.getColor(R.color.blue))
+                comedo.setBackgroundResource(R.drawable.button_outline_selected)
             }
         }
 
-        val oilySkin = binding.btnOilySkin
-        oilySkin.setOnClickListener{
-            if(skinProblems.contains("Oily Skin")) {
-                skinProblems.remove("Oily Skin")
-                oilySkin.setTextColor(resources.getColor(R.color.grey))
-                oilySkin.setBackgroundResource(R.drawable.button_outline)
+        val clearSkin = binding.btnClearSkin
+        clearSkin.setOnClickListener{
+            if(skinProblems.contains("Clear Skin")) {
+                skinProblems.remove("Clear Skin")
+                clearSkin.setTextColor(resources.getColor(R.color.grey))
+                clearSkin.setBackgroundResource(R.drawable.button_outline)
             } else {
-                skinProblems.add("Oily Skin")
-                oilySkin.setTextColor(resources.getColor(R.color.blue))
-                oilySkin.setBackgroundResource(R.drawable.button_outline_selected)
+                skinProblems.add("Clear Skin")
+                clearSkin.setTextColor(resources.getColor(R.color.blue))
+                clearSkin.setBackgroundResource(R.drawable.button_outline_selected)
             }
         }
     }

@@ -11,5 +11,7 @@
     <color name="pink">#FDA7CB</color>
     <color name="light_pink">#FFE9F2</color>
     <color name="grey">#AEB3BB</color>
+    <color name="yellow">#FDCC0D</color>
+    <color name="dark_yellow">#FF9529</color>
 
 </resources>

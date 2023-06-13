@@ -24,8 +24,11 @@ interface ApiService {
         @Field("birthDate") birthDate: String
     ): Call<UpdateUserResponse>
 
-    @GET("products")
-    fun getProducts(): Call<Product>
+    @FormUrlEncoded
+    @POST("products/getAllFilteredIngredients")
+    fun getProducts(
+        @Field("filter[]") filter: List<String>
+    ): Call<GetAllProductResponse>
 
     @FormUrlEncoded
     @POST("users/getUserData")

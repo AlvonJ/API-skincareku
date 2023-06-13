@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/item_product"
         android:layout_width="130dp"
-        android:layout_height="240dp"
+        android:layout_height="230dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         app:cardBackgroundColor="@color/light_pink"
@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/iv_product"
                 android:layout_width="100dp"
-                android:layout_height="150dp"
+                android:layout_height="130dp"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -33,9 +33,15 @@
 
             <TextView
                 android:id="@+id/tv_product_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:textAlignment="center"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="12sp"
                 android:text="Product Name"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -45,38 +51,55 @@
 
             <TextView
                 android:id="@+id/tv_product_description"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
-                android:text="Product Description"
+                android:layout_marginEnd="10dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Product Description Test TEst Test TEst TEst testtestetesttest"
                 android:textColor="@color/black"
-                android:textSize="10sp"
+                android:textSize="8sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_product_title" />
 
             <TextView
-                android:id="@+id/tv_likes_count"
+                android:id="@+id/tv_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:text="1001"
-                android:textColor="@color/pink"
+                android:layout_marginStart="3dp"
+                android:text="4.7"
+                android:textColor="@color/dark_yellow"
                 android:textSize="10dp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/iv_favorite"
-                app:layout_constraintTop_toBottomOf="@+id/tv_product_description" />
+                app:layout_constraintBottom_toBottomOf="@+id/iv_favorite"
+                app:layout_constraintStart_toEndOf="@+id/iv_favorite"
+                app:layout_constraintTop_toTopOf="@+id/iv_favorite" />
 
             <ImageView
                 android:id="@+id/iv_favorite"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="3dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_product_description"
-                app:srcCompat="@drawable/baseline_favorite_24" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_price"
+                app:srcCompat="@drawable/baseline_star_24" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:text="$ 17"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_product_description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
