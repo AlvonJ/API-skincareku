@@ -63,6 +63,9 @@
  *           items:
  *            type: string
  *           description: field that want to filtered by Ingredients(filter must be in Array)
+ *         method:
+ *           type: string
+ *           description: set method with and / or
  */
 
 const express = require('express')

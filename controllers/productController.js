@@ -9,13 +9,16 @@ exports.getAll = catchAsync(async (req, res, next) => {
   let productArr = []
   product.forEach(doc => {
     const data = doc.data()
-    const ingredientsArr = data.ingredients.split(', ')
+    const ingredientsArr = data.ingredients
+      .split(', ')
+      .map(item => item.toLowerCase())
     productArr.push({
       id: doc.id,
       data: { ...data, ingredients: ingredientsArr }
     })
   })
   res.status(200).json({
+    item: productArr.length,
     status: 'Success',
     data: productArr
   })
@@ -29,7 +32,9 @@ exports.getAllFiltered = catchAsync(async (req, res, next) => {
   let productArr = []
   product.forEach(doc => {
     const data = doc.data()
-    const ingredientsArr = data.ingredients.split(', ')
+    const ingredientsArr = data.ingredients
+      .split(', ')
+      .map(item => item.toLowerCase())
     productArr.push({
       id: doc.id,
       data: { ...data, ingredients: ingredientsArr }
@@ -40,6 +45,7 @@ exports.getAllFiltered = catchAsync(async (req, res, next) => {
     return next(new AppError('Products Not Found!', 404))
 
   res.status(200).json({
+    item: productArr.length,
     status: 'Success',
     data: productArr
   })
@@ -66,22 +72,35 @@ exports.getFilteredIngredients = catchAsync(async (req, res, next) => {
   let productArr = []
   product.forEach(doc => {
     const data = doc.data()
-    const ingredientsArr = data.ingredients.split(', ')
+    const ingredientsArr = data.ingredients
+      .split(', ')
+      .map(item => item.toLowerCase())
     productArr.push({
       id: doc.id,
       data: { ...data, ingredients: ingredientsArr }
     })
   })
 
-  const { filter } = req.body
-  const filtered = productArr.filter(product =>
-    filter.every(ingredient => product.data.ingredients.includes(ingredient))
-  )
+  const { filter, method } = req.body
+  if (!filter || !method)
+    return next(new AppError('input filter and method!', 500))
+
+  let filtered = []
+  if (method === 'and') {
+    filtered = productArr.filter(product =>
+      filter.every(ingredient => product.data.ingredients.includes(ingredient))
+    )
+  } else if (method === 'or') {
+    filtered = productArr.filter(product =>
+      filter.some(ingredient => product.data.ingredients.includes(ingredient))
+    )
+  }
 
   if (productArr.length === 0 || filtered.length === 0)
     return next(new AppError('Products Not Found!', 404))
 
   res.status(200).json({
+    item: filtered.length,
     status: 'Success',
     data: filtered
   })
