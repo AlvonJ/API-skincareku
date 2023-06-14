@@ -56,4 +56,6 @@
     <string name="take_image">Take Image</string>
     <string name="output">Output:</string>
     <string name="comedo">Comedo</string>
+
+    <string name="search">Search</string>
 </resources>

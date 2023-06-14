@@ -1,60 +1,97 @@
 package com.bangkit.skincareku.view.main.buyProduct
 
 import android.os.Bundle
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bangkit.skincareku.R
+import com.bangkit.skincareku.databinding.FragmentBuyProductBinding
+import com.bangkit.skincareku.networking.response.GetAllProductItem
+import com.bangkit.skincareku.networking.retrofit.ApiConfig
+import com.bangkit.skincareku.view.main.dashboard.ProductRecommendationAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [BuyProductFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class BuyProductFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private var _binding: FragmentBuyProductBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var buyProductViewModel: BuyProductViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
+        setHasOptionsMenu(true)
+
+
+    }
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_buy_product, container, false)
+        _binding = FragmentBuyProductBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BuyProductFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            BuyProductFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val layoutManager = GridLayoutManager(requireActivity(), 2)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        binding.rvproduct.layoutManager = layoutManager
+
+        ApiConfig.init(requireActivity())
+        buyProductViewModel = BuyProductViewModel()
+        setupViewModel()
+        buyProductViewModel.getProductAll()
+
+
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.serach_product, menu)
+        val searchItem = menu.findItem(R.id.search)
+        val searchView = searchItem.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                buyProductViewModel.searchProduct(newText.orEmpty())
+                return true
+            }
+        })
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun setupViewModel(){
+        buyProductViewModel.productList.observe(requireActivity(), { list ->
+            getAllProduct(list)
+        })
+
+        buyProductViewModel.filteredProductList.observe(viewLifecycleOwner, { list ->
+            getAllProduct(list)
+        })
+    }
+
+    private fun getAllProduct(list: ArrayList<GetAllProductItem>){
+        val listProduct = ArrayList<GetAllProductItem>()
+
+        for (item in list){
+            listProduct.add(
+                GetAllProductItem(
+                    item.data,
+                    item.id
+                )
+            )
+        }
+
+        val adapter = ProductRecommendationAdapter(listProduct)
+        binding.rvproduct.adapter = adapter
+    }
+
 }

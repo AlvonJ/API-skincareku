@@ -42,4 +42,9 @@ interface ApiService {
         @Part image: MultipartBody.Part
     ): Call<ModelResponse>
 
+    @GET("products/getAll")
+    fun getAllProducts(
+    ): Call<GetAllProductResponse>
+
+
 }

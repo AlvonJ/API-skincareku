@@ -11,7 +11,6 @@ import com.bangkit.skincareku.view.main.buyProduct.BuyProductFragment
 import com.bangkit.skincareku.view.main.dashboard.DashboardFragment
 import com.bangkit.skincareku.view.main.faceAnalyze.FaceAnalyzeActivity
 import com.bangkit.skincareku.view.main.feed.FeedFragment
-import com.bangkit.skincareku.view.signup.SignupActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -20,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
+        supportActionBar?.show()
 
         val dashboardFragment = DashboardFragment()
         val feedFragment = FeedFragment()
@@ -52,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
