@@ -1,6 +1,9 @@
 package com.bangkit.skincareku.view.main.faceAnalyze
 
+import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -8,17 +11,27 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.ActivityFaceAnalyzeBinding
+import com.bangkit.skincareku.networking.database.ItemCart
 import com.bangkit.skincareku.networking.response.ModelResponse
 import com.bangkit.skincareku.networking.retrofit.ApiConfig
+import com.bangkit.skincareku.view.main.CartPage.CartActivity
+import com.bangkit.skincareku.view.main.CartPage.CartViewModel
+import com.bangkit.skincareku.view.main.CartPage.ViewModelFactory
+import com.bangkit.skincareku.view.main.MainActivity
+import com.bumptech.glide.Glide
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -32,16 +45,37 @@ class FaceAnalyzeActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private lateinit var button: Button
     private lateinit var outputTextView: TextView
+    private lateinit var label: String
+    private lateinit var cleanser: ItemCart
+    private lateinit var toner: ItemCart
+    private lateinit var moisturizer: ItemCart
+    private lateinit var serum: ItemCart
     private var GALLERY_REQUEST_CODE = 123
+    private var progressDialog: Dialog? = null
+
+    private lateinit var faceAnalyzeViewModel: FaceAnalyzeViewModel
+    private val cartViewModel by viewModels<CartViewModel>() {
+        ViewModelFactory.getInstance(
+            application
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFaceAnalyzeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
+        ApiConfig.init(this)
+        faceAnalyzeViewModel = FaceAnalyzeViewModel()
+
+        progressDialog = Dialog(this)
+        progressDialog?.setCancelable(false)
+
         imageView = binding.imageView
         button = binding.bntCaptureImage
-        outputTextView = binding.outputTextView
+        outputTextView = binding.tvDescription
         val buttonLoad = binding.btnLoadImage
 
         button.setOnClickListener {
@@ -52,7 +86,11 @@ class FaceAnalyzeActivity : AppCompatActivity() {
             ) {
                 takePicturePreview.launch(null)
             } else {
-                requestPermission.launch(android.Manifest.permission.CAMERA)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.CAMERA),
+                    CAMERA_PERMISSION_REQUEST_CODE
+                )
             }
         }
         buttonLoad.setOnClickListener {
@@ -73,6 +111,195 @@ class FaceAnalyzeActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun setupViewModel(label: String) {
+        val acneIngredients = listOf("niacinamide", "alicylic acid", "benzoyl peroxide", "salicylic acid")
+        val comedoIngredients = listOf("bentonite", "glycolic acid", "lactic acid")
+        val clearSkinIngredients = listOf("hyaluronic acid", "vitamin c", "ceramide")
+
+        faceAnalyzeViewModel.getCleanserRecommendation()
+        faceAnalyzeViewModel.cleanser.observe(this, { list ->
+            for (cleanser in list) {
+                if(label == "acne") {
+                    val containIngredients = acneIngredients.any{cleanser.data.ingredients.contains(it)}
+                    if (containIngredients) {
+                        bindCleanser(cleanser.id, cleanser.data.productName, cleanser.data.description, cleanser.data.price, cleanser.data.rating.toString(), cleanser.data.imageUrl)
+                        break
+                    }
+                } else if (label == "comedo") {
+                    val containIngredients = comedoIngredients.any{cleanser.data.ingredients.contains(it)}
+                    if (containIngredients) {
+                        bindCleanser(cleanser.id, cleanser.data.productName, cleanser.data.description, cleanser.data.price, cleanser.data.rating.toString(), cleanser.data.imageUrl)
+                        break
+                    }
+                } else if (label == "clear skin") {
+                    val containIngredients = clearSkinIngredients.contains(cleanser.data.category)
+                    if (containIngredients) {
+                        bindCleanser(cleanser.id, cleanser.data.productName, cleanser.data.description, cleanser.data.price, cleanser.data.rating.toString(), cleanser.data.imageUrl)
+                        break
+                    }
+                }
+            }
+        })
+
+        faceAnalyzeViewModel.getMoisturizerRecommendation()
+        faceAnalyzeViewModel.moisturizer.observe(this, { list ->
+            for (moisturizer in list) {
+                if(label == "acne") {
+                    val containIngredients = acneIngredients.any{moisturizer.data.ingredients.contains(it)}
+                    if (containIngredients) {
+                        bindMoisturizer(moisturizer.id, moisturizer.data.productName, moisturizer.data.description, moisturizer.data.price, moisturizer.data.rating.toString(), moisturizer.data.imageUrl)
+                        break
+                    }
+                } else if (label == "comedo") {
+                    val containIngredients = comedoIngredients.any{moisturizer.data.ingredients.contains(it)}
+                    if (containIngredients) {
+                        bindMoisturizer(moisturizer.id, moisturizer.data.productName, moisturizer.data.description, moisturizer.data.price, moisturizer.data.rating.toString(), moisturizer.data.imageUrl)
+                        break
+                    }
+                } else if (label == "clear skin") {
+                    val containIngredients = clearSkinIngredients.contains(moisturizer.data.category)
+                    if (containIngredients) {
+                        bindMoisturizer(moisturizer.id, moisturizer.data.productName, moisturizer.data.description, moisturizer.data.price, moisturizer.data.rating.toString(), moisturizer.data.imageUrl)
+                        break
+                    }
+                }
+            }
+        })
+
+        faceAnalyzeViewModel.getTonerRecommendation()
+        faceAnalyzeViewModel.toner.observe(this, { list ->
+            for (toner in list) {
+                if(label == "acne") {
+                    val containIngredients = acneIngredients.any{toner.data.ingredients.contains(it)}
+                    if (containIngredients) {
+                        bindToner(toner.id, toner.data.productName, toner.data.description, toner.data.price, toner.data.rating.toString(), toner.data.imageUrl)
+                        break
+                    }
+                } else if (label == "comedo") {
+                    val containIngredients = comedoIngredients.any{toner.data.ingredients.contains(it)}
+                    if (containIngredients) {
+                        bindToner(toner.id, toner.data.productName, toner.data.description, toner.data.price, toner.data.rating.toString(), toner.data.imageUrl)
+                        break
+                    }
+                } else if (label == "clear skin") {
+                    val containIngredients = clearSkinIngredients.contains(toner.data.category)
+                    if (containIngredients) {
+                        bindToner(toner.id, toner.data.productName, toner.data.description, toner.data.price, toner.data.rating.toString(), toner.data.imageUrl)
+                        break
+                    }
+                }
+            }
+        })
+
+        faceAnalyzeViewModel.getSerumRecommendation()
+        faceAnalyzeViewModel.serum.observe(this, { list ->
+            for (serum in list) {
+                if(label == "acne") {
+                    val containIngredients = acneIngredients.any{serum.data.ingredients.contains(it)}
+                    println(containIngredients)
+                    if (containIngredients) {
+                        bindSerum(serum.id, serum.data.productName, serum.data.description, serum.data.price, serum.data.rating.toString(), serum.data.imageUrl)
+                        break
+                    }
+                } else if (label == "comedo") {
+                    val containIngredients = comedoIngredients.any{serum.data.ingredients.contains(it)}
+                    if (containIngredients) {
+                        bindSerum(serum.id, serum.data.productName, serum.data.description, serum.data.price, serum.data.rating.toString(), serum.data.imageUrl)
+                        break
+                    }
+                } else if (label == "clear skin") {
+                    val containIngredients = clearSkinIngredients.contains(serum.data.category)
+                    if (containIngredients) {
+                        bindSerum(serum.id, serum.data.productName, serum.data.description, serum.data.price, serum.data.rating.toString(), serum.data.imageUrl)
+                        break
+                    }
+                }
+            }
+        })
+
+        faceAnalyzeViewModel.isLoading.observe(this, { isLoading ->
+            if (isLoading) {
+                progressDialog?.show()
+                progressDialog?.setContentView(R.layout.item_progress_dialog)
+                progressDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            } else {
+                progressDialog?.dismiss()
+            }
+        })
+
+        binding.btnSubmit.setOnClickListener{
+            AlertDialog.Builder(this)
+                .setTitle("Confirmation")
+                .setMessage(R.string.buying_recommended_product)
+                .setPositiveButton("Yes") { dialog, which ->
+                    println(binding.cbCleanser.isChecked)
+                    if(binding.cbCleanser.isChecked) {
+                        cartViewModel.addDelItem(cleanser, false)
+                    }
+                    if(binding.cbMousturizer.isChecked) {
+                        cartViewModel.addDelItem(moisturizer, false)
+                    }
+                    if(binding.cbSerum.isChecked) {
+                        cartViewModel.addDelItem(serum, false)
+                    }
+                    if(binding.cbToner.isChecked) {
+                        cartViewModel.addDelItem(toner, false)
+                    }
+                    val intent = Intent(this, CartActivity::class.java)
+                    startActivity(intent)
+                }
+                .setNegativeButton("No") { dialog, which ->
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                }
+                .show()
+        }
+    }
+
+    private fun bindCleanser (id: String, title: String, description: String, price: String, rating: String, imageUrl: String) {
+        cleanser = ItemCart(id, title, imageUrl, price, true)
+        binding.tvCleanserTitle.text = title
+        binding.tvCleanserDescription.text = description
+        binding.tvCleanserPrice.text = price
+        binding.tvCleanserRating.text = rating
+        Glide.with(this)
+            .load(imageUrl)
+            .into(binding.ivCleanserImage)
+    }
+
+    private fun bindMoisturizer (id: String, title: String, description: String, price: String, rating: String, imageUrl: String) {
+        moisturizer = ItemCart(id, title, imageUrl, price, true)
+        binding.tvMoisturizerTitle.text = title
+        binding.tvMoisturizerDescription.text = description
+        binding.tvMoisturizerPrice.text = price
+        binding.tvMoisturizerRating.text = rating
+        Glide.with(this)
+            .load(imageUrl)
+            .into(binding.ivMoisturizerImage)
+    }
+
+    private fun bindToner (id: String, title: String, description: String, price: String, rating: String, imageUrl: String) {
+        toner = ItemCart(id, title, imageUrl, price, true)
+        binding.tvTonerTitle.text = title
+        binding.tvTonerDescription.text = description
+        binding.tvTonerPrice.text = price
+        binding.tvTonerRating.text = rating
+        Glide.with(this)
+            .load(imageUrl)
+            .into(binding.ivTonerImage)
+    }
+
+    private fun bindSerum (id: String, title: String, description: String, price: String, rating: String, imageUrl: String) {
+        serum = ItemCart(id, title, imageUrl, price, true)
+        binding.tvSerumTitle.text = title
+        binding.tvSerumDescription.text = description
+        binding.tvSerumPrice.text = price
+        binding.tvSerumRating.text = rating
+        Glide.with(this)
+            .load(imageUrl)
+            .into(binding.ivSerumImage)
     }
 
     private val requestPermission =
@@ -134,8 +361,11 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                         val prediction = modelResponse.prediction
                         val maxEntry = prediction.maxByOrNull { it.value }
                         if (maxEntry != null) {
-                            val label = maxEntry.key
-                            outputTextView.text = label
+                            label = maxEntry.key
+                            outputTextView.text = getString(R.string.skin_analysis, label)
+                            println("Label : " + label)
+                            binding.clRecommendation.visibility = View.VISIBLE
+                            setupViewModel(label)
                         }
                     } else {
                         Toast.makeText(
@@ -164,5 +394,9 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    companion object {
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 1001
     }
 }

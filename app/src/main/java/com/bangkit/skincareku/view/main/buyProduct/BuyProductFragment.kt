@@ -27,8 +27,6 @@ class BuyProductFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
-
-
     }
     override fun onCreateView(
         inflater: LayoutInflater,

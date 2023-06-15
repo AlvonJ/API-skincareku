@@ -28,6 +28,7 @@ class ApiConfig {
                     val original = chain.request()
                     val requestBuilder = original.newBuilder()
                         .header("Accept", "application/json")
+                        .header("x-api-key", "dq79h_x82R2VqEy6OvbGC3OBwVSMEvTykf0aaffk_bc")
                     val request = requestBuilder.build()
                     chain.proceed(request)}
                 .build()
