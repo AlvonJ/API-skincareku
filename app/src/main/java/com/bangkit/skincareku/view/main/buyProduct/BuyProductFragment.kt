@@ -1,6 +1,7 @@
 package com.bangkit.skincareku.view.main.buyProduct
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
@@ -9,9 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.FragmentBuyProductBinding
-import com.bangkit.skincareku.databinding.ItemProgressDialogBinding
 import com.bangkit.skincareku.networking.response.GetAllProductItem
 import com.bangkit.skincareku.networking.retrofit.ApiConfig
+import com.bangkit.skincareku.view.main.CartPage.CartActivity
 import com.bangkit.skincareku.view.main.dashboard.ProductRecommendationAdapter
 
 
@@ -53,13 +54,11 @@ class BuyProductFragment : Fragment() {
         proggresDialog = Dialog(requireContext())
         proggresDialog?.setCancelable(false)
 
-
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.serach_product, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.buy_menu, menu)
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -72,8 +71,16 @@ class BuyProductFragment : Fragment() {
                 return true
             }
         })
+    }
 
-        super.onCreateOptionsMenu(menu, inflater)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.it_cart ->{
+                val intent = Intent(requireContext(), CartActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupViewModel(){

@@ -9,4 +9,10 @@
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
+    <item
+        android:id="@+id/it_cart"
+        android:icon="@drawable/add_cart"
+        android:title="Add to cart"
+        app:showAsAction="ifRoom"/>
+
 </menu>
