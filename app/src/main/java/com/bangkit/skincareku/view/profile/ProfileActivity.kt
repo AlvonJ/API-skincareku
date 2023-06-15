@@ -28,7 +28,6 @@ class ProfileActivity : AppCompatActivity() {
 
         profileViewModel = ProfileViewModel()
 
-
         setupViewModel()
         setup()
 
