@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/item_product"
-                android:layout_width="130dp"
+                android:layout_width="0dp"
                 android:layout_height="230dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="16dp"
@@ -46,7 +47,8 @@
                 android:layout_marginTop="16dp"
                 android:text="Nama Produk"
                 android:textAlignment="center"
-                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,11 +58,13 @@
 
             <TextView
                 android:id="@+id/desc_detail"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="20dp"
                 android:text="Description"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,11 +88,11 @@
 
             <TextView
                 android:id="@+id/ingredients"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="295dp"
+                android:layout_marginEnd="20dp"
                 android:text="ingredients"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -100,70 +104,91 @@
                 android:id="@+id/imageView3"
                 android:layout_width="31dp"
                 android:layout_height="29dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="27dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="5dp"
                 app:layout_constraintEnd_toStartOf="@+id/goodrate"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ingredients"
+                app:layout_constraintTop_toBottomOf="@+id/price"
                 app:srcCompat="@drawable/like" />
 
             <TextView
                 android:id="@+id/goodrate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="27dp"
-                android:layout_marginEnd="276dp"
+                android:layout_marginEnd="20dp"
                 android:text="goodrate"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toBottomOf="@+id/ingredients" />
+                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="31dp"
                 android:layout_height="29dp"
-                android:layout_marginTop="9dp"
-                app:layout_constraintEnd_toStartOf="@+id/badrate"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/goodrate"
                 app:srcCompat="@drawable/bad" />
 
             <TextView
                 android:id="@+id/badrate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
-                android:layout_marginEnd="287dp"
+                android:layout_marginStart="5dp"
                 android:text="badrate"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/goodrate" />
+                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
             <TextView
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
                 android:text="product_price"
+                android:textColor="@color/black"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.045"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/badrate" />
+                app:layout_constraintTop_toBottomOf="@+id/ingredients" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fb_cart"
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/desc_detail" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="24dp"
-                android:src="@drawable/add_cart"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="202dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
-    </LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fb_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/add_cart"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

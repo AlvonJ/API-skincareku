@@ -28,11 +28,12 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: CartAdapter.ViewHolder, position: Int) {
         holder.bind(listProduk[position])
+
     }
 
     override fun getItemCount(): Int = listProduk.size
 
-    class ViewHolder(private val binding: ItemCartBinding): RecyclerView.ViewHolder(binding.root){
+    class ViewHolder(val binding: ItemCartBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(cart: ItemCart){
             with(binding){
                 Glide.with(itemView.context)
