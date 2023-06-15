@@ -56,6 +56,28 @@
     <string name="take_image">Take Image</string>
     <string name="output">Output:</string>
     <string name="comedo">Comedo</string>
+    <string name="skin_analysis">Its look like there is %s in your face, here are some recommended products that may help improve your condition : </string>
+    <string name="dummy">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="confirm">Confirm</string>
 
     <string name="search">Search</string>
+
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="getup_title">Get Up</string>
+    <string name="cleanser_title">Cleanser</string>
+    <string name="toner_title">Toner</string>
+    <string name="serum_title">Serum</string>
+    <string name="moisturizer_title">Moisturizer</string>
+    <string name="sleep_title">Sleep</string>
+    <string name="getup_description">Get up and start your day with a fresh face</string>
+    <string name="cleanser_description">Cleanse your face with a gentle cleanser</string>
+    <string name="toner_description">Tone your face with a toner</string>
+    <string name="serum_description">Apply serum to your face</string>
+    <string name="moisturizer_description">Moisturize your face</string>
+    <string name="sleep_description">Sleep and let your skin rest</string>
+
+    <string name="buying_recommended_product">Do you want to buy the product that we suggest?</string>
+
 </resources>

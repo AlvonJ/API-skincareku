@@ -17,8 +17,8 @@ class DashboardViewModel : ViewModel() {
     val isError: LiveData<Boolean> = _isError
     private val _productRecommendationList = MutableLiveData<ArrayList<GetAllProductItem>>()
     val productRecommendationList: LiveData<ArrayList<GetAllProductItem>> = _productRecommendationList
-    private val _articleList = MutableLiveData<ArrayList<Article>>()
-    val articleList: LiveData<ArrayList<Article>> = _articleList
+    private val _articleList = MutableLiveData<ArrayList<ArticlesItem>>()
+    val articleList: LiveData<ArrayList<ArticlesItem>> = _articleList
 
     private val _isConnectionError = MutableLiveData<Boolean>()
     val isConnectionError: LiveData<Boolean> = _isConnectionError
@@ -34,7 +34,7 @@ class DashboardViewModel : ViewModel() {
         println("getProductRecommendation")
 
         val baseUrl = "https://services-skincareku-5ctldki4wq-et.a.run.app/"
-        val client = ApiConfig.getApiService(baseUrl).getProducts(filter)
+        val client = ApiConfig.getApiService(baseUrl).getProducts(filter, "or")
         client.enqueue(object : Callback<GetAllProductResponse> {
             override fun onResponse(
                 call: Call<GetAllProductResponse>,
@@ -61,42 +61,33 @@ class DashboardViewModel : ViewModel() {
         })
     }
 
-    fun getArticle () {
+    fun getArticle (keyword : String) {
         _isLoading.value = true
-        _isError.value = false
-        val article = ArrayList<Article>()
-        article.add(
-            Article(
-                "Article 1",
-                20,
-            )
-        )
-        article.add(
-            Article(
-                "Article 2",
-                10,
-            )
-        )
-        article.add(
-            Article(
-                "Article 3",
-                25,
-            )
-        )
-        article.add(
-            Article(
-                "Article 4",
-                20,
-            )
-        )
-        article.add(
-            Article(
-                "Article 5",
-                30,
-            )
-        )
-        _articleList.value = article
-        _isLoading.value = false
+        println("getProductRecommendation")
+
+        val baseUrl = "https://api.newscatcherapi.com/"
+        val client = ApiConfig.getApiService(baseUrl).getArticles(keyword, "US", "10", "true")
+        client.enqueue(object : Callback<ArticleResponse> {
+            override fun onResponse(
+                call: Call<ArticleResponse>,
+                response: Response<ArticleResponse>
+            ) {
+                _isLoading.value = false
+                if (response.isSuccessful) {
+//                    println(response.body()?.articles as ArrayList<ArticlesItem>?)
+                    _articleList.value = response.body()?.articles as ArrayList<ArticlesItem>?
+                } else {
+                    Log.d("Error", response.message())
+                    _isError.value = true
+                }
+            }
+
+            override fun onFailure(call: Call<ArticleResponse>, t: Throwable) {
+                println("onFailure")
+                _isError.value = true
+                _isLoading.value = false
+            }
+        })
     }
 
     fun getUserByEmail(email: String) {

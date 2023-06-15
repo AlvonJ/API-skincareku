@@ -27,7 +27,15 @@ interface ApiService {
     @FormUrlEncoded
     @POST("products/getAllFilteredIngredients")
     fun getProducts(
-        @Field("filter[]") filter: List<String>
+        @Field("filter[]") filter: List<String>,
+        @Field("method") method: String
+    ): Call<GetAllProductResponse>
+
+    @FormUrlEncoded
+    @POST("products/getAllFiltered")
+    fun getProductsByCategory(
+        @Field("field") field: String,
+        @Field("value") value: String
     ): Call<GetAllProductResponse>
 
     @FormUrlEncoded
@@ -46,5 +54,11 @@ interface ApiService {
     fun getAllProducts(
     ): Call<GetAllProductResponse>
 
-
+    @GET("/v2/search")
+    fun getArticles(
+        @Query("q") q: String,
+        @Query("countries") countries: String,
+        @Query("page_size") page_size: String,
+        @Query("ranked_only") rankey_only: String
+    ): Call<ArticleResponse>
 }
