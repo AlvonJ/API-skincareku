@@ -1,6 +1,8 @@
 package com.bangkit.skincareku.networking.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class GetAllProductResponse(
 
@@ -10,7 +12,7 @@ data class GetAllProductResponse(
 	@field:SerializedName("status")
 	val status: String
 )
-
+@Parcelize
 data class GetAllProductItem(
 
 	@field:SerializedName("data")
@@ -18,8 +20,9 @@ data class GetAllProductItem(
 
 	@field:SerializedName("id")
 	val id: String
-)
+): Parcelable
 
+@Parcelize
 data class GetAllProductData(
 
 	@field:SerializedName("product_url")
@@ -54,4 +57,4 @@ data class GetAllProductData(
 
 	@field:SerializedName("good_reviews")
 	val goodReviews: Int
-)
+) : Parcelable

@@ -1,5 +1,6 @@
 package com.bangkit.skincareku.view.main.dashboard
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +8,7 @@ import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.ItemProductBinding
 import com.bangkit.skincareku.networking.response.GetAllProductItem
 import com.bangkit.skincareku.networking.response.Product
+import com.bangkit.skincareku.view.main.buyProduct.DetailProductActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -21,6 +23,11 @@ class ProductRecommendationAdapter (private val productRecommendationList: Array
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         holder.bind(productRecommendationList[position])
+        holder.itemView.setOnClickListener {
+            val intentdetail = Intent(holder.itemView.context, DetailProductActivity::class.java)
+            intentdetail.putExtra("key_product", productRecommendationList[holder.adapterPosition])
+            holder.itemView.context.startActivity(intentdetail)
+        }
 
     }
 
@@ -46,3 +53,5 @@ class ProductRecommendationAdapter (private val productRecommendationList: Array
     }
 
 }
+
+

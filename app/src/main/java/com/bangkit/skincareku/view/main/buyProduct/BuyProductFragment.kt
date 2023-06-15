@@ -1,5 +1,6 @@
 package com.bangkit.skincareku.view.main.buyProduct
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.FragmentBuyProductBinding
+import com.bangkit.skincareku.databinding.ItemProgressDialogBinding
 import com.bangkit.skincareku.networking.response.GetAllProductItem
 import com.bangkit.skincareku.networking.retrofit.ApiConfig
 import com.bangkit.skincareku.view.main.dashboard.ProductRecommendationAdapter
@@ -18,6 +20,7 @@ class BuyProductFragment : Fragment() {
     private var _binding: FragmentBuyProductBinding? = null
     private val binding get() = _binding!!
     private lateinit var buyProductViewModel: BuyProductViewModel
+    private var proggresDialog : Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,11 @@ class BuyProductFragment : Fragment() {
         buyProductViewModel = BuyProductViewModel()
         setupViewModel()
         buyProductViewModel.getProductAll()
+
+        proggresDialog = Dialog(requireContext())
+        proggresDialog?.setCancelable(false)
+
+
 
 
     }
@@ -76,6 +84,17 @@ class BuyProductFragment : Fragment() {
         buyProductViewModel.filteredProductList.observe(viewLifecycleOwner, { list ->
             getAllProduct(list)
         })
+
+        buyProductViewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
+            if (isLoading) {
+                proggresDialog?.show()
+                proggresDialog?.setContentView(R.layout.item_progress_dialog)
+                proggresDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            } else {
+                proggresDialog?.dismiss()
+            }
+        })
+
     }
 
     private fun getAllProduct(list: ArrayList<GetAllProductItem>){
