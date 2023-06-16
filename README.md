@@ -13,6 +13,14 @@ Deployment of TensorFlow lite and creating both user and an admin app. Applicati
 Figma link:
 https://www.figma.com/file/UJmWdlyZ53n1EZ9le7ZnWD/Untitled?type=design&node-id=0-1&t=CRbyZiZwsnvNyOYN-0
 
+## Features
+
+- Login and sign up using email and password
+- Detect facial skin problem using camera or gallery
+- Recommendation skincare products based on facial skin problem
+- Search skincare products
+- Read article
+
 ## Technologies and Libraries
 - Material Design
 - Retrofit
