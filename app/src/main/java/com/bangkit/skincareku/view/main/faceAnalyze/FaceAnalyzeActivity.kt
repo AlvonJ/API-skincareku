@@ -25,20 +25,22 @@ import androidx.core.content.ContextCompat
 import com.bangkit.skincareku.R
 import com.bangkit.skincareku.databinding.ActivityFaceAnalyzeBinding
 import com.bangkit.skincareku.networking.database.ItemCart
+import com.bangkit.skincareku.networking.response.GetAllProductItem
 import com.bangkit.skincareku.networking.response.ModelResponse
 import com.bangkit.skincareku.networking.retrofit.ApiConfig
 import com.bangkit.skincareku.view.main.CartPage.CartActivity
 import com.bangkit.skincareku.view.main.CartPage.CartViewModel
 import com.bangkit.skincareku.view.main.CartPage.ViewModelFactory
 import com.bangkit.skincareku.view.main.MainActivity
+import com.bangkit.skincareku.view.main.buyProduct.DetailProductActivity
 import com.bumptech.glide.Glide
-import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.ByteArrayOutputStream
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 
 class FaceAnalyzeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFaceAnalyzeBinding
@@ -121,6 +123,10 @@ class FaceAnalyzeActivity : AppCompatActivity() {
         var hasToner = 0
         var hasMoisturizer = 0
         var hasSerum = 0
+        var cleanserData : GetAllProductItem? = null
+        var tonerData : GetAllProductItem? = null
+        var moisturizerData : GetAllProductItem? = null
+        var serumData : GetAllProductItem? = null
 
         faceAnalyzeViewModel.getCleanserRecommendation()
         faceAnalyzeViewModel.cleanser.observe(this, { list ->
@@ -129,6 +135,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = acneIngredients.any{cleanser.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindCleanser(cleanser.id, cleanser.data.productName, cleanser.data.description, cleanser.data.price, cleanser.data.rating.toString(), cleanser.data.imageUrl)
+                        cleanserData = cleanser
                         hasCleanser = 1
                         break
                     }
@@ -136,6 +143,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = comedoIngredients.any{cleanser.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindCleanser(cleanser.id, cleanser.data.productName, cleanser.data.description, cleanser.data.price, cleanser.data.rating.toString(), cleanser.data.imageUrl)
+                        cleanserData = cleanser
                         hasCleanser = 1
                         break
                     }
@@ -143,6 +151,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = clearSkinIngredients.any{cleanser.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindCleanser(cleanser.id, cleanser.data.productName, cleanser.data.description, cleanser.data.price, cleanser.data.rating.toString(), cleanser.data.imageUrl)
+                        cleanserData = cleanser
                         hasCleanser = 1
                         break
                     }
@@ -154,6 +163,8 @@ class FaceAnalyzeActivity : AppCompatActivity() {
             }else{
                 binding.cvCleanser.visibility = View.VISIBLE
                 binding.tvCleanser.visibility = View.VISIBLE
+
+                binding.cvCleanser
             }
         })
 
@@ -164,6 +175,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = acneIngredients.any{moisturizer.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindMoisturizer(moisturizer.id, moisturizer.data.productName, moisturizer.data.description, moisturizer.data.price, moisturizer.data.rating.toString(), moisturizer.data.imageUrl)
+                        moisturizerData = moisturizer
                         hasMoisturizer = 1
                         break
                     }
@@ -171,6 +183,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = comedoIngredients.any{moisturizer.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindMoisturizer(moisturizer.id, moisturizer.data.productName, moisturizer.data.description, moisturizer.data.price, moisturizer.data.rating.toString(), moisturizer.data.imageUrl)
+                        moisturizerData = moisturizer
                         hasMoisturizer = 1
                         break
                     }
@@ -178,6 +191,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = clearSkinIngredients.any{moisturizer.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindMoisturizer(moisturizer.id, moisturizer.data.productName, moisturizer.data.description, moisturizer.data.price, moisturizer.data.rating.toString(), moisturizer.data.imageUrl)
+                        moisturizerData = moisturizer
                         hasMoisturizer = 1
                         break
                     }
@@ -199,6 +213,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = acneIngredients.any{toner.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindToner(toner.id, toner.data.productName, toner.data.description, toner.data.price, toner.data.rating.toString(), toner.data.imageUrl)
+                        tonerData = toner
                         hasToner = 1
                         break
                     }
@@ -206,6 +221,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = comedoIngredients.any{toner.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindToner(toner.id, toner.data.productName, toner.data.description, toner.data.price, toner.data.rating.toString(), toner.data.imageUrl)
+                        tonerData = toner
                         hasToner = 1
                         break
                     }
@@ -213,6 +229,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = clearSkinIngredients.any{toner.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindToner(toner.id, toner.data.productName, toner.data.description, toner.data.price, toner.data.rating.toString(), toner.data.imageUrl)
+                        tonerData = toner
                         hasToner = 1
                         break
                     }
@@ -236,6 +253,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     println(containIngredients)
                     if (containIngredients) {
                         bindSerum(serum.id, serum.data.productName, serum.data.description, serum.data.price, serum.data.rating.toString(), serum.data.imageUrl)
+                        serumData = serum
                         hasSerum = 1
                         break
                     }
@@ -243,6 +261,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = comedoIngredients.any{serum.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindSerum(serum.id, serum.data.productName, serum.data.description, serum.data.price, serum.data.rating.toString(), serum.data.imageUrl)
+                        serumData = serum
                         hasSerum = 1
                         break
                     }
@@ -250,6 +269,7 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = clearSkinIngredients.any{serum.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindSerum(serum.id, serum.data.productName, serum.data.description, serum.data.price, serum.data.rating.toString(), serum.data.imageUrl)
+                        serumData = serum
                         hasSerum = 1
                         break
                     }
@@ -264,7 +284,29 @@ class FaceAnalyzeActivity : AppCompatActivity() {
             }
         })
 
+        binding.cvCleanser.setOnClickListener {
+            val intent = Intent(this, DetailProductActivity::class.java)
+            intent.putExtra("key_product", cleanserData)
+            startActivity(intent)
+        }
 
+        binding.cvMoisturizer.setOnClickListener {
+            val intent = Intent(this, DetailProductActivity::class.java)
+            intent.putExtra("key_product", moisturizerData)
+            startActivity(intent)
+        }
+
+        binding.cvSerum.setOnClickListener {
+            val intent = Intent(this, DetailProductActivity::class.java)
+            intent.putExtra("key_product", serumData)
+            startActivity(intent)
+        }
+
+        binding.cvToner.setOnClickListener {
+            val intent = Intent(this, DetailProductActivity::class.java)
+            intent.putExtra("key_product", tonerData)
+            startActivity(intent)
+        }
 
         faceAnalyzeViewModel.isLoading.observe(this, { isLoading ->
             if (isLoading) {

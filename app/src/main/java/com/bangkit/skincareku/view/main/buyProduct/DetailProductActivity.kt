@@ -32,7 +32,7 @@ class DetailProductActivity : AppCompatActivity(){
         setContentView(binding.root)
 
         val dataProduct = intent.getParcelableExtra("key_product") as GetAllProductItem?
-
+        println("data product : $dataProduct")
         binding.apply {
             productName.text = dataProduct?.data?.productName
             descDetail.text = dataProduct?.data?.description
