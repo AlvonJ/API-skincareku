@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 class ApiConfig {
     companion object {
@@ -23,14 +24,17 @@ class ApiConfig {
             }
 
             val client = OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
+//                .addInterceptor(loggingInterceptor)
                 .addInterceptor{chain ->
                     val original = chain.request()
                     val requestBuilder = original.newBuilder()
                         .header("Accept", "application/json")
-                        .header("x-api-key", "dq79h_x82R2VqEy6OvbGC3OBwVSMEvTykf0aaffk_bc")
+                        .header("x-api-key", "Q70WJ2YN-XOF9UcwGsG_NpIMXh8sQ7Rc2QiLuJEwxzk")
                     val request = requestBuilder.build()
                     chain.proceed(request)}
+                .connectTimeout(2, TimeUnit.SECONDS) // Set connection timeout
+                .readTimeout(2, TimeUnit.SECONDS) // Set read timeout
+                .writeTimeout(2, TimeUnit.SECONDS)
                 .build()
             val retrofit = Retrofit.Builder()
                 .baseUrl(baseUrl)

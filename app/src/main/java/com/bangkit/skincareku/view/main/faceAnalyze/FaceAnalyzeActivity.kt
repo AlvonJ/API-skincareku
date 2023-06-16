@@ -117,6 +117,10 @@ class FaceAnalyzeActivity : AppCompatActivity() {
         val acneIngredients = listOf("niacinamide", "alicylic acid", "benzoyl peroxide", "salicylic acid")
         val comedoIngredients = listOf("bentonite", "glycolic acid", "lactic acid")
         val clearSkinIngredients = listOf("hyaluronic acid", "vitamin c", "ceramide")
+        var hasCleanser = 0
+        var hasToner = 0
+        var hasMoisturizer = 0
+        var hasSerum = 0
 
         faceAnalyzeViewModel.getCleanserRecommendation()
         faceAnalyzeViewModel.cleanser.observe(this, { list ->
@@ -125,21 +129,31 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = acneIngredients.any{cleanser.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindCleanser(cleanser.id, cleanser.data.productName, cleanser.data.description, cleanser.data.price, cleanser.data.rating.toString(), cleanser.data.imageUrl)
+                        hasCleanser = 1
                         break
                     }
                 } else if (label == "comedo") {
                     val containIngredients = comedoIngredients.any{cleanser.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindCleanser(cleanser.id, cleanser.data.productName, cleanser.data.description, cleanser.data.price, cleanser.data.rating.toString(), cleanser.data.imageUrl)
+                        hasCleanser = 1
                         break
                     }
-                } else if (label == "clear skin") {
-                    val containIngredients = clearSkinIngredients.contains(cleanser.data.category)
+                } else if (label == "clean") {
+                    val containIngredients = clearSkinIngredients.any{cleanser.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindCleanser(cleanser.id, cleanser.data.productName, cleanser.data.description, cleanser.data.price, cleanser.data.rating.toString(), cleanser.data.imageUrl)
+                        hasCleanser = 1
                         break
                     }
                 }
+            }
+            if(hasCleanser == 0){
+                binding.cvCleanser.visibility = View.GONE
+                binding.tvCleanser.visibility = View.GONE
+            }else{
+                binding.cvCleanser.visibility = View.VISIBLE
+                binding.tvCleanser.visibility = View.VISIBLE
             }
         })
 
@@ -150,21 +164,31 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = acneIngredients.any{moisturizer.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindMoisturizer(moisturizer.id, moisturizer.data.productName, moisturizer.data.description, moisturizer.data.price, moisturizer.data.rating.toString(), moisturizer.data.imageUrl)
+                        hasMoisturizer = 1
                         break
                     }
                 } else if (label == "comedo") {
                     val containIngredients = comedoIngredients.any{moisturizer.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindMoisturizer(moisturizer.id, moisturizer.data.productName, moisturizer.data.description, moisturizer.data.price, moisturizer.data.rating.toString(), moisturizer.data.imageUrl)
+                        hasMoisturizer = 1
                         break
                     }
-                } else if (label == "clear skin") {
-                    val containIngredients = clearSkinIngredients.contains(moisturizer.data.category)
+                } else if (label == "clean") {
+                    val containIngredients = clearSkinIngredients.any{moisturizer.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindMoisturizer(moisturizer.id, moisturizer.data.productName, moisturizer.data.description, moisturizer.data.price, moisturizer.data.rating.toString(), moisturizer.data.imageUrl)
+                        hasMoisturizer = 1
                         break
                     }
                 }
+            }
+            if(hasMoisturizer == 0){
+                binding.cvMoisturizer.visibility = View.GONE
+                binding.cvCleanser.visibility = View.GONE
+            }else{
+                binding.cvMoisturizer.visibility = View.VISIBLE
+                binding.cvCleanser.visibility = View.VISIBLE
             }
         })
 
@@ -175,21 +199,32 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     val containIngredients = acneIngredients.any{toner.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindToner(toner.id, toner.data.productName, toner.data.description, toner.data.price, toner.data.rating.toString(), toner.data.imageUrl)
+                        hasToner = 1
                         break
                     }
                 } else if (label == "comedo") {
                     val containIngredients = comedoIngredients.any{toner.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindToner(toner.id, toner.data.productName, toner.data.description, toner.data.price, toner.data.rating.toString(), toner.data.imageUrl)
+                        hasToner = 1
                         break
                     }
-                } else if (label == "clear skin") {
-                    val containIngredients = clearSkinIngredients.contains(toner.data.category)
+                } else if (label == "clean") {
+                    val containIngredients = clearSkinIngredients.any{toner.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindToner(toner.id, toner.data.productName, toner.data.description, toner.data.price, toner.data.rating.toString(), toner.data.imageUrl)
+                        hasToner = 1
                         break
                     }
                 }
+            }
+
+            if(hasToner == 0){
+                binding.cvToner.visibility = View.GONE
+                binding.tvToner.visibility = View.GONE
+            }else{
+                binding.cvToner.visibility = View.VISIBLE
+                binding.tvToner.visibility = View.VISIBLE
             }
         })
 
@@ -201,23 +236,35 @@ class FaceAnalyzeActivity : AppCompatActivity() {
                     println(containIngredients)
                     if (containIngredients) {
                         bindSerum(serum.id, serum.data.productName, serum.data.description, serum.data.price, serum.data.rating.toString(), serum.data.imageUrl)
+                        hasSerum = 1
                         break
                     }
                 } else if (label == "comedo") {
                     val containIngredients = comedoIngredients.any{serum.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindSerum(serum.id, serum.data.productName, serum.data.description, serum.data.price, serum.data.rating.toString(), serum.data.imageUrl)
+                        hasSerum = 1
                         break
                     }
-                } else if (label == "clear skin") {
-                    val containIngredients = clearSkinIngredients.contains(serum.data.category)
+                } else if (label == "clean") {
+                    val containIngredients = clearSkinIngredients.any{serum.data.ingredients.contains(it)}
                     if (containIngredients) {
                         bindSerum(serum.id, serum.data.productName, serum.data.description, serum.data.price, serum.data.rating.toString(), serum.data.imageUrl)
+                        hasSerum = 1
                         break
                     }
                 }
             }
+            if(hasSerum == 0){
+                binding.cvSerum.visibility = View.GONE
+                binding.tvSerum.visibility = View.GONE
+            }else{
+                binding.cvSerum.visibility = View.VISIBLE
+                binding.tvSerum.visibility = View.VISIBLE
+            }
         })
+
+
 
         faceAnalyzeViewModel.isLoading.observe(this, { isLoading ->
             if (isLoading) {

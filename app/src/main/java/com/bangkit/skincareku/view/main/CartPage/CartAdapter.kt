@@ -11,9 +11,8 @@ import com.bangkit.skincareku.networking.database.ItemCart
 import com.bangkit.skincareku.view.main.buyProduct.DetailProductActivity
 import com.bumptech.glide.Glide
 
-class CartAdapter : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
+class CartAdapter(private val viewModel: CartViewModel) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
     private var listProduk = emptyList<ItemCart>()
-
     fun updateList(newList: List<ItemCart>){
         val diffCall = DiffUtil.calculateDiff(ItemDiffCallback(listProduk, newList))
         this.listProduk = newList
@@ -27,6 +26,7 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CartAdapter.ViewHolder, position: Int) {
+
         holder.bind(listProduk[position])
 
     }

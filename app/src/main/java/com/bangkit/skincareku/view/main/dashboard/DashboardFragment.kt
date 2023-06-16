@@ -318,11 +318,7 @@ class DashboardFragment : Fragment() {
     private fun setupViewModel() {
 
         val acneIngredients = listOf("niacinamide", "alicylic acid", "benzoyl peroxide", "salicylic acid")
-        // Sulfur
-
         val comedoIngredients = listOf("bentonite", "glycolic acid", "lactic acid")
-        // Clay", "Retinol", "Niacinamide", "Zinc", "Salicylic Acid", "Benzoyl Peroxide"
-
         val clearSkinIngredients = listOf("hyaluronic acid", "vitamin c", "ceramide")
 
         val dataManager = DataManager(requireContext())
@@ -336,13 +332,13 @@ class DashboardFragment : Fragment() {
             println(acneIngredients)
             if (skinProblemArrayList.contains("Acne")) {
                 dashboardViewModel.getProductRecommendation(acneIngredients)
-//                dashboardViewModel.getArticle("acne skincare")
+                dashboardViewModel.getArticle("acne skincare")
             }else if(skinProblemArrayList.contains("Comedo")){
                 dashboardViewModel.getProductRecommendation(comedoIngredients)
-//                dashboardViewModel.getArticle("comedo skincare")
+                dashboardViewModel.getArticle("comedo skincare")
             }else if(skinProblemArrayList.contains("Clear Skin")){
                 dashboardViewModel.getProductRecommendation(clearSkinIngredients)
-//                dashboardViewModel.getArticle("how to take care of facial skin")
+                dashboardViewModel.getArticle("how to take care of facial skin")
             }
         })
 
