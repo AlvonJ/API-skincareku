@@ -187,8 +187,15 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:src="@drawable/add_cart"
+        android:backgroundTint="@color/blue"
+        android:clickable="true"
+        app:backgroundTint="@null"
+        android:tint="@color/white"
+        app:tint="@null"
+        android:foregroundTint="@color/white"
+        app:srcCompat="@drawable/add_cart"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

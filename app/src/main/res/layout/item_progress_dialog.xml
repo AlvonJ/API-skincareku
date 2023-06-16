@@ -16,10 +16,10 @@
 
         <ProgressBar
             android:id="@+id/progressBarDialog"
-            style="?android:attr/progressBarStyle"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"/>
     </androidx.cardview.widget.CardView>
 
 
