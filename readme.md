@@ -33,6 +33,11 @@ The following are the services contained in the SkinCareku API:
 - [Firestore](https://firebase.google.com/docs/firestore?hl=id)
 - [Google Cloud Run](https://cloud.google.com/run?hl=id)
 
+## Tools
+
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Postman](https://www.postman.com/)
+
 ## Documentation
 
 The following is the API documentation created using the [Swagger UI](https://swagger.io/tools/swagger-ui/) and deployed using [Google Cloud Run](https://cloud.google.com/run?hl=id).
